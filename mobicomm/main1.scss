@@ -1,0 +1,7 @@
+// $primary: #7e60f5;
+$primary: #9b84f7;
+$btn-hover-bg: lighten($primary, 10%);
+$btn-active-bg: darken($primary, 10%);
+$secondary: #4463dd;
+
+@import"./node_modules/bootstrap/scss/bootstrap"
