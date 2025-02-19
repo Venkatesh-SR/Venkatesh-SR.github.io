@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transactions</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="/css/main1.min.css" />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center">
+          <img
+            src="assets/logo plain.png"
+            alt="Logo"
+            width="40"
+            height="30"
+            class="me-2"
+          />
+          <span class="fw-bold">MOBI COMM - Admin</span>
+        </a>
+        <div class="d-flex align-items-center">
+          <span class="text-white me-3">Admin</span>
+          <img
+            src="assets/avatar.webp"
+            alt="Admin Avatar"
+            width="40"
+            height="40"
+            class="rounded-circle"
+          />
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar & Main Content -->
+    <div class="d-flex mt-5">
+      <!-- Sidebar -->
+      <div class="bg-light vh-100 p-3" style="width: 250px">
+        <a
+          href="admin.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+        >
+          <i class="fa-solid fa-chart-line me-2"></i>Dashboard
+        </a>
+        <a
+          href="userManagement.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+        >
+          <i class="fa-solid fa-users me-2"></i>User Management
+        </a>
+        <a
+          href="planManagement.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+        >
+          <i class="fa-solid fa-list me-2"></i>Plan Management
+        </a>
+        <a
+          href="transactions.html"
+          class="text-primary text-decoration-none d-block p-2 rounded active"
+          style="background-color: #a3c9eb"
+        >
+          <i class="fa-solid fa-money-check-alt me-2"></i>Transactions
+        </a>
+        <a
+          href="#"
+          class="text-danger text-decoration-none d-block p-2 rounded hover-bg-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#logoutModal"
+        >
+          <i class="fa-solid fa-sign-out-alt me-2"></i>Logout
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="container-fluid mt-5 ms-3">
+        <h2>Transactions</h2>
+
+        <!-- Summary Cards -->
+        <div class="row my-3">
+          <div class="col-md-6">
+            <div class="card text-dark p-3" style="background-color: #a3c9eb;">
+              <h5>Total Transactions</h5>
+              <h3 id="totalTransactions">0</h3>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card text-dark p-3" style="background-color: rgb(231, 218, 244);">
+              <h5>Total Revenue</h5>
+              <h3>₹<span id="totalRevenue">0</span></h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters & Download -->
+        <div class="d-flex justify-content-between my-3">
+          <div class="d-flex gap-2">
+            <input
+              type="text"
+              id="searchBox"
+              class="form-control"
+              placeholder="Search Transactions"
+              style="width: 200px"
+            />
+            <select id="paymentFilter" class="form-select" style="width: 200px">
+              <option value="">All Payment Modes</option>
+              <option value="UPI">UPI</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+          </div>
+          <button class="btn btn-warning" onclick="downloadReport()">
+            <i class="fa fa-download"></i> Download Report
+          </button>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="card p-3">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>User</th>
+                  <th>Mobile</th>
+                  <th>Plan Name</th>
+                  <th>Amount</th>
+                  <th>Payment Mode</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTable">
+                <!-- Transactions will be dynamically inserted here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-between my-3">
+          <button
+            class="btn btn-primary"
+            id="prevPage"
+            onclick="changePage(-1)"
+          >
+            Previous
+          </button>
+          <span
+            >Page <span id="currentPage">1</span> of
+            <span id="totalPages">1</span></span
+          >
+          <button class="btn btn-primary" id="nextPage" onclick="changePage(1)">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <hr class="border-white-50 my-4" />
+      <div
+        class="d-flex flex-column flex-sm-row justify-content-between bg-dark"
+      >
+        <p class="mb-0 text-light">© 2025 Mobi Comm. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Logout Confirmation</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+            >
+              Stay
+            </button>
+            <button type="button" class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      let transactions = [];
+      let plans = [];
+      let currentPage = 1;
+      const rowsPerPage = 15;
+
+      // Fetch transactions and plans data from external JSON files
+      async function fetchData() {
+        try {
+          const [txnResponse, planResponse] = await Promise.all([
+            fetch("transactions.json"),
+            fetch("plans.json"),
+          ]);
+          transactions = await txnResponse.json();
+          plans = await planResponse.json();
+          loadTransactions();
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      // Render transactions with search, payment filter, and pagination.
+      function loadTransactions() {
+        const table = document.getElementById("transactionsTable");
+        const searchQuery = document
+          .getElementById("searchBox")
+          .value.toLowerCase();
+        const paymentFilter = document.getElementById("paymentFilter").value;
+
+        // Filter transactions; include all fields:
+        // Transaction ID, User, Mobile, Plan ID, Plan Name (from plans.json), Amount, Payment Mode, Date.
+        let filteredTransactions = transactions.filter((txn) => {
+          // Lookup plan name using plan_id from plans.json
+          const planObj = plans.find(
+            (p) => p.plan_id.toLowerCase() === txn.plan_id.toLowerCase()
+          );
+          const planName = planObj ? planObj.plan_name : "";
+          return (
+            txn.id.toLowerCase().includes(searchQuery) ||
+            txn.user.toLowerCase().includes(searchQuery) ||
+            txn.mobile.includes(searchQuery) ||
+            txn.plan_id.toLowerCase().includes(searchQuery) ||
+            planName.toLowerCase().includes(searchQuery) ||
+            txn.amount.toString().includes(searchQuery) ||
+            txn.paymentMode.toLowerCase().includes(searchQuery) ||
+            txn.date.includes(searchQuery)
+          );
+        });
+
+        if (paymentFilter) {
+          filteredTransactions = filteredTransactions.filter(
+            (txn) => txn.paymentMode === paymentFilter
+          );
+        }
+
+        const totalPages =
+          Math.ceil(filteredTransactions.length / rowsPerPage) || 1;
+        document.getElementById("totalPages").innerText = totalPages;
+        document.getElementById("currentPage").innerText = currentPage;
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = filteredTransactions.slice(start, end);
+
+        table.innerHTML = "";
+        paginatedData.forEach((txn) => {
+          const planObj = plans.find(
+            (p) => p.plan_id.toLowerCase() === txn.plan_id.toLowerCase()
+          );
+          const planName = planObj ? planObj.plan_name : "N/A";
+          table.innerHTML += `<tr>
+          <td>${txn.id}</td>
+          <td>${txn.user}</td>
+          <td>${txn.mobile}</td>
+          <td>${planName}</td>
+          <td>₹${txn.amount}</td>
+          <td>${txn.paymentMode}</td>
+          <td>${txn.date}</td>
+        </tr>`;
+        });
+
+        document.getElementById("prevPage").disabled = currentPage === 1;
+        document.getElementById("nextPage").disabled =
+          currentPage === totalPages;
+
+        // Update summary cards
+        document.getElementById("totalTransactions").innerText =
+          filteredTransactions.length;
+        document.getElementById("totalRevenue").innerText =
+          filteredTransactions.reduce((sum, txn) => sum + txn.amount, 0);
+      }
+
+      function changePage(direction) {
+        currentPage += direction;
+        loadTransactions();
+      }
+
+      // Download report based on currently filtered transactions and include all fields.
+      function downloadReport() {
+        const searchQuery = document
+          .getElementById("searchBox")
+          .value.toLowerCase();
+        const paymentFilter = document.getElementById("paymentFilter").value;
+        let filteredTransactions = transactions.filter((txn) => {
+          const planObj = plans.find(
+            (p) => p.plan_id.toLowerCase() === txn.plan_id.toLowerCase()
+          );
+          const planName = planObj ? planObj.plan_name : "";
+          return (
+            txn.id.toLowerCase().includes(searchQuery) ||
+            txn.user.toLowerCase().includes(searchQuery) ||
+            txn.mobile.includes(searchQuery) ||
+            txn.plan_id.toLowerCase().includes(searchQuery) ||
+            planName.toLowerCase().includes(searchQuery) ||
+            txn.amount.toString().includes(searchQuery) ||
+            txn.paymentMode.toLowerCase().includes(searchQuery) ||
+            txn.date.includes(searchQuery)
+          );
+        });
+        if (paymentFilter) {
+          filteredTransactions = filteredTransactions.filter(
+            (txn) => txn.paymentMode === paymentFilter
+          );
+        }
+
+        let csvContent =
+          "Transaction ID,User,Mobile,Plan ID,Plan Name,Amount,Payment Mode,Date\n";
+        filteredTransactions.forEach((txn) => {
+          const planObj = plans.find(
+            (p) => p.plan_id.toLowerCase() === txn.plan_id.toLowerCase()
+          );
+          const planName = planObj ? planObj.plan_name : "N/A";
+          csvContent += `${txn.id},${txn.user},${txn.mobile},${txn.plan_id},${planName},${txn.amount},${txn.paymentMode},${txn.date}\n`;
+        });
+
+        let blob = new Blob([csvContent], { type: "text/csv" });
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "transactions_report.csv";
+        link.click();
+      }
+
+      document.getElementById("searchBox").addEventListener("input", () => {
+        currentPage = 1;
+        loadTransactions();
+      });
+      document
+        .getElementById("paymentFilter")
+        .addEventListener("change", () => {
+          currentPage = 1;
+          loadTransactions();
+        });
+
+      function logout() {
+        window.location.href = "index.html";
+      }
+
+      // Fetch transactions and plans on page load
+      fetchData();
+    </script>
+  </body>
+</html>

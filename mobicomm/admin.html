@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="/css/main1.min.css" />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary fixed-top mb-5">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center">
+          <img
+            src="assets/logo plain.png"
+            alt="Logo"
+            width="40"
+            height="30"
+            class="me-2"
+          />
+          <span class="fw-bold">MOBI COMM - Admin</span>
+        </a>
+        <div class="d-flex align-items-center">
+          <span class="text-white me-3">Admin</span>
+          <img
+            src="assets/avatar.webp"
+            alt="Admin Avatar"
+            width="40"
+            height="40"
+            class="rounded-circle"
+          />
+        </div>
+      </div>
+    </nav>
+
+    <div class="d-flex mt-5">
+      <!-- Sidebar -->
+      <div class="bg-light text-white vh-100 p-3" style="width: 250px">
+        <a
+          href="admin.html"
+          class="text-primary text-decoration-none d-block p-2 active rounded"
+          style="background-color: #a3c9eb"
+          ><i class="fa-solid fa-chart-line me-2"></i>Dashboard</a
+        >
+        <a
+          href="userManagement.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+          ><i class="fa-solid fa-users me-2"></i>User Management</a
+        >
+        <a
+          href="planManagement.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+          ><i class="fa-solid fa-list me-2"></i>Plan Management</a
+        >
+        <a
+          href="transactions.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+          ><i class="fa-solid fa-money-check-alt me-2"></i>Transactions</a
+        >
+        <a
+          href="#"
+          class="text-danger text-decoration-none d-block p-2 rounded hover-bg-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#logoutModal"
+          ><i class="fa-solid fa-sign-out-alt me-2"></i>Logout</a
+        >
+      </div>
+
+      <!-- Main Content -->
+      <div class="container-fluid mt-5 ms-3">
+        <h2>Dashboard Overview</h2>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="card text-center p-3">
+              <h5>Active Subscribers</h5>
+              <h3 id="activeSubscribers">0</h3>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-center p-3">
+              <h5>Validity less than 3 days</h5>
+              <h3 id="expiringPlansCount">0</h3>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-center p-3">
+              <h5>Recent Recharges</h5>
+              <h3 id="recentRecharges">0</h3>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-center p-3">
+              <h5>Total Revenue</h5>
+              <h3>₹<span id="totalRevenue">0</span></h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expiring Plans Table -->
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div class="card p-3">
+              <h5 class="text-center">Plans Expiring within 3 days</h5>
+              <div
+                class="table-responsive"
+                style="max-height: 250px; overflow-y: auto"
+              >
+                <table class="table table-bordered text-center table-hover">
+                  <thead class="table-primary sticky-top">
+                    <tr>
+                      <th>Subscriber</th>
+                      <th>Contact</th>
+                      <th>Current Plan</th>
+                      <th>Expiry Date</th>
+                      <th>Remaining Days</th>
+                    </tr>
+                  </thead>
+                  <tbody id="expiringUsersTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Insights Graph: Revenue by Plan -->
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div class="card p-3">
+              <h5 class="text-center">Revenue by Plan</h5>
+              <canvas id="revenueChart" style="max-height: 300px"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Selling Plans Analysis -->
+        <div class="card mt-4 p-3">
+          <h5>Top Selling Plans Analysis</h5>
+          <table class="table table-bordered text-center table-hover">
+            <thead class="table-primary">
+              <tr>
+                <th>Plan</th>
+                <th>Price</th>
+                <th>Subscribers</th>
+                <th>Total Revenue</th>
+              </tr>
+            </thead>
+            <tbody id="topPlansTable">
+              <!-- Dynamic rows will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <hr class="border-white-50 my-4" />
+      <div class="d-flex flex-column flex-sm-row justify-content-between bg-dark">
+        <p class="mb-0 text-light">© 2025 Mobi Comm. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Logout Modal -->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="logoutModalLabel">
+              Logout Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+              Stay
+            </button>
+            <button type="button" class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recharge History Modal -->
+    <div
+      class="modal fade"
+      id="rechargeHistoryModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="rechargeHistoryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="rechargeHistoryModalLabel">
+              Recharge History
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h5 id="userName"></h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Plan Name</th>
+                  <th>Date</th>
+                  <th>Payment Mode</th>
+                </tr>
+              </thead>
+              <tbody id="rechargeHistoryTable"></tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Global data arrays
+      let users = [];
+      let transactions = [];
+      let plans = [];
+
+      // Fetch all data from users.json, transactions.json, and plans.json
+      function fetchAllData() {
+        Promise.all([
+          fetch("users.json").then(res => res.json()),
+          fetch("transactions.json").then(res => res.json()),
+          fetch("plans.json").then(res => res.json())
+        ]).then(([uData, txnData, pData]) => {
+          users = uData;
+          transactions = txnData;
+          plans = pData;
+          updateSubscribers();
+          updateExpiringPlans();
+          updateTransactionsMetrics();
+          updateBestPlansAnalysis();
+          updateRevenueChart();
+        }).catch(error => console.error("Error fetching dashboard data:", error));
+      }
+
+      // Update Active Subscribers Count (from users.json with status "active")
+      function updateSubscribers() {
+        const active = users.filter(u => u.status.toLowerCase() === "active").length;
+        document.getElementById("activeSubscribers").innerText = active;
+      }
+
+      // Update Expiring Plans Table (expiry within next 3 days)
+      function updateExpiringPlans() {
+        const expiringUsersTable = document.getElementById("expiringUsersTable");
+        expiringUsersTable.innerHTML = "";
+        const currentDate = new Date();
+        const threeDaysLater = new Date();
+        threeDaysLater.setDate(currentDate.getDate() + 3);
+        let expiringUsers = users.filter(user => {
+          const expiryDate = new Date(user.expiry);
+          return expiryDate <= threeDaysLater && expiryDate >= currentDate;
+        });
+        document.getElementById("expiringPlansCount").innerText = expiringUsers.length;
+        expiringUsers.forEach(user => {
+          const planObj = plans.find(p => p.plan_id === user.plan_id);
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${user.name}</td>
+            <td>${user.mobile}</td>
+            <td>${planObj ? planObj.plan_name : "N/A"}</td>
+            <td>${user.expiry}</td>
+            <td>${Math.ceil((new Date(user.expiry) - currentDate) / (1000 * 60 * 60 * 24))} Days</td>
+          `;
+          row.addEventListener("click", () => {
+            showRechargeHistory(user.name);
+            const modal = new bootstrap.Modal(document.getElementById("rechargeHistoryModal"));
+            modal.show();
+          });
+          expiringUsersTable.appendChild(row);
+        });
+      }
+
+      // Update Transaction Metrics (Recent Recharges & Total Revenue)
+      function updateTransactionsMetrics() {
+        document.getElementById("recentRecharges").innerText = transactions.length;
+        const revenue = transactions.reduce((sum, txn) => sum + txn.amount, 0);
+        document.getElementById("totalRevenue").innerText = revenue.toLocaleString();
+      }
+
+      // Update Top Selling Plans Analysis using users and transactions data
+      function updateBestPlansAnalysis() {
+        let subscriberCount = {};
+        users.forEach(user => {
+          const pid = user.plan_id;
+          subscriberCount[pid] = (subscriberCount[pid] || 0) + 1;
+        });
+        let revenueByPlan = {};
+        transactions.forEach(txn => {
+          const pid = txn.plan_id;
+          revenueByPlan[pid] = (revenueByPlan[pid] || 0) + txn.amount;
+        });
+        let topPlans = [];
+        plans.forEach(plan => {
+          const pid = plan.plan_id;
+          topPlans.push({
+            plan: plan.plan_name,
+            price: plan.price,
+            subscribers: subscriberCount[pid] || 0,
+            revenue: revenueByPlan[pid] || 0
+          });
+        });
+        topPlans.sort((a, b) => b.subscribers - a.subscribers);
+        const tableBody = document.getElementById("topPlansTable");
+        tableBody.innerHTML = "";
+        topPlans.forEach(planStat => {
+          tableBody.innerHTML += `<tr>
+            <td>${planStat.plan}</td>
+            <td>₹${planStat.price}</td>
+            <td>${planStat.subscribers}</td>
+            <td>₹${planStat.revenue.toLocaleString()}</td>
+          </tr>`;
+        });
+      }
+
+      // Update the "Revenue by Plan" chart dynamically
+      function updateRevenueChart() {
+        // Compute revenue per plan from transactions data
+        let revenueByPlan = {};
+        transactions.forEach(txn => {
+          const pid = txn.plan_id.toLowerCase();
+          revenueByPlan[pid] = (revenueByPlan[pid] || 0) + txn.amount;
+        });
+        // Build arrays for chart labels and data
+        let planNames = [];
+        let revenueValues = [];
+        plans.forEach(plan => {
+          planNames.push(plan.plan_name);
+          revenueValues.push(revenueByPlan[plan.plan_id.toLowerCase()] || 0);
+        });
+        // If chart already exists, update it; otherwise, create a new Chart.js instance
+        if (window.revenueChartInstance) {
+          window.revenueChartInstance.data.labels = planNames;
+          window.revenueChartInstance.data.datasets[0].data = revenueValues;
+          window.revenueChartInstance.update();
+        } else {
+          const ctx = document.getElementById('revenueChart').getContext('2d');
+          window.revenueChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: planNames,
+              datasets: [{
+                label: 'Revenue (₹)',
+                data: revenueValues,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: { beginAtZero: true }
+              }
+            }
+          });
+        }
+      }
+
+      // Show Recharge History Modal for a given user
+      function showRechargeHistory(userName) {
+        Promise.all([
+          fetch('users.json').then(res => res.json()),
+          fetch('plans.json').then(res => res.json())
+        ])
+        .then(([usersData, plansData]) => {
+          const user = usersData.find(u => u.name === userName);
+          document.getElementById("userName").textContent = userName;
+          const rechargeHistoryTable = document.getElementById("rechargeHistoryTable");
+          rechargeHistoryTable.innerHTML = "";
+          user.rechargeHistory.forEach(history => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${history.planName}</td>
+              <td>${history.date}</td>
+              <td>${history.paymentType}</td>
+            `;
+            rechargeHistoryTable.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading recharge history:', error));
+      }
+
+      function logout() {
+        window.location.href = "index.html";
+      }
+
+      // Initialize everything after DOM loads
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize revenue chart (will be updated after data fetch)
+        const dummyCtx = document.getElementById('revenueChart').getContext('2d');
+        window.revenueChartInstance = new Chart(dummyCtx, {
+          type: 'bar',
+          data: {
+            labels: [],
+            datasets: [{
+              label: 'Revenue (₹)',
+              data: [],
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+        fetchAllData();
+      });
+    </script>
+
+    <!-- Recharge History Modal -->
+    <div class="modal fade" id="rechargeHistoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="rechargeHistoryModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="rechargeHistoryModalLabel">Recharge History</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h5 id="userName"></h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Plan Name</th>
+                  <th>Date</th>
+                  <th>Payment Mode</th>
+                </tr>
+              </thead>
+              <tbody id="rechargeHistoryTable"></tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

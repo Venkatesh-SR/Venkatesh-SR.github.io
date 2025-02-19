@@ -1,0 +1,82 @@
+[
+  {
+    "plan_id": "P001",
+    "category": "Recommended",
+    "plan_name": "Basic Pack",
+    "price": 199,
+    "data": "1GB/day",
+    "validity": 28
+  },
+  {
+    "plan_id": "P002",
+    "category": "Super Hero",
+    "plan_name": "Super 2GB Pack",
+    "price": 299,
+    "data": "2GB/day",
+    "validity": 28
+  },
+  {
+    "plan_id": "P003",
+    "category": "Hero Unlimited",
+    "plan_name": "Unlimited 3GB",
+    "price": 399,
+    "data": "3GB/day",
+    "validity": 28
+  },
+  {
+    "plan_id": "P004",
+    "category": "OTT",
+    "plan_name": "OTT Combo",
+    "price": 599,
+    "data": "2GB/day + Netflix",
+    "validity": 56
+  },
+  {
+    "plan_id": "P005",
+    "category": "Combo / Validity",
+    "plan_name": "Annual Plan",
+    "price": 2399,
+    "data": "1.5GB/day",
+    "validity": 365
+  },
+  {
+    "plan_id": "P006",
+    "category": "Data",
+    "plan_name": "Extra 10GB",
+    "price": 101,
+    "data": "10GB",
+    "validity": 30
+  },
+  {
+    "plan_id": "P007",
+    "category": "Top Up",
+    "plan_name": "Top-Up ₹50",
+    "price": 50,
+    "data": "NA",
+    "validity": "NA"
+  },
+  {
+    "plan_id": "P008",
+    "category": "Plan Voucher",
+    "plan_name": "Voucher ₹249",
+    "price": 249,
+    "data": "1.5GB/day",
+    "validity": 28
+  },
+  {
+    "plan_id": "P009",
+    "category": "Recommended",
+    "plan_name": "Super Saver",
+    "price": 479,
+    "data": "2.5GB/day",
+    "validity": 56
+  },
+  {
+    "plan_id": "P010",
+    "category": "OTT",
+    "plan_name": "Premium OTT Pack",
+    "price": 799,
+    "data": "3GB/day + Prime Video",
+    "validity": 84
+  }
+]
