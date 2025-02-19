@@ -8,11 +8,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
-      <link
-      rel="icon"
-      href="assets/logo plain.png"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
     <link rel="stylesheet" href="../css/main.min.css" />
     <link rel="stylesheet" href="main.css" />
   </head>
@@ -86,7 +82,12 @@
               </form>
 
               <!-- Notification Icon -->
-              <a href="#" class="text-white me-3 position-relative">
+              <a
+                href="#"
+                class="text-white me-3 position-relative"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationModal"
+              >
                 <i class="fa-solid fa-bell fa-lg"></i>
                 <span
                   class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -106,9 +107,17 @@
                   <i class="fa-solid fa-circle-user fa-lg"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                  <li>
+                    <a class="dropdown-item" href="profile.html">My Profile</a>
+                  </li>
                   <li><hr class="dropdown-divider" /></li>
-                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+                  <a
+                    class="dropdown-item text-danger"
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#logoutModal"
+                    >Logout</a
+                  >
                 </ul>
               </div>
             </div>
@@ -116,24 +125,92 @@
         </div>
       </nav>
     </header>
-    <!-- Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="logoutModalLabel">Logout Confirmation</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to log out?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Stay</button>
-        <button type="button" class="btn btn-danger" onclick="logout()">Logout</button>
+
+    <!-- Notification Modal -->
+    <div
+      class="modal fade"
+      id="notificationModal"
+      tabindex="-1"
+      aria-labelledby="notificationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered sepe">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="notificationModalLabel">
+              Recharge Reminder
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Don't forget to recharge your account to continue enjoying
+              uninterrupted services!
+            </p>
+          </div>
+          <div class="modal-body">
+            <p>Don't miss the exciting offers!</p>
+          </div>
+          <div class="modal-body">
+            <p>Check out the lastest offers!</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Okay, Got It
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <!-- Logout Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="logoutModalLabel">
+              Logout Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+            >
+              Stay
+            </button>
+            <button type="button" class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <br /><br />
     <main class="container mt-4">
       <!-- Carousel Section -->
@@ -228,108 +305,122 @@
       </section>
 
       <!-- Yearly and Monthly Plans Section -->
-    <section id="best-plans" class="container mt-5 mb-5 text-center">
-  <h2 class="mb-4">Best Plans</h2>
+      <section id="best-plans" class="container mt-5 mb-5 text-center">
+        <h2 class="mb-4">Best Plans</h2>
 
-  <!-- Toggle Buttons -->
-  <div class="btn-group mb-4">
-    <button id="monthlyBtn" class="btn btn-primary">Monthly Plans</button>
-    <button id="yearlyBtn" class="btn btn-outline-primary">Yearly Plans</button>
-  </div>
+        <!-- Toggle Buttons -->
+        <div class="btn-group mb-4">
+          <button id="monthlyBtn" class="btn btn-primary">Monthly Plans</button>
+          <button id="yearlyBtn" class="btn btn-outline-primary">
+            Yearly Plans
+          </button>
+        </div>
 
-  <!-- Monthly Plans (Default) -->
-  <div id="monthlyPlans" class="row">
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm text-center">
-        <div class="card-body">
-          <h5 class="card-title">Basic Monthly</h5>
-          <p class="card-text">₹299 / 28 Days</p>
-          <p>1.5GB/Day + Unlimited Calls</p>
-          <a href="recharge.html?plan=Basic-Monthly&price=299&validity=28&data=1.5GB"
-            class="btn btn-outline-primary rounded-pill px-4">
-            Recharge Now
-          </a>
+        <!-- Monthly Plans (Default) -->
+        <div id="monthlyPlans" class="row">
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+              <div class="card-body">
+                <h5 class="card-title">Basic Monthly</h5>
+                <p class="card-text">₹299 / 28 Days</p>
+                <p>1.5GB/Day + Unlimited Calls</p>
+                <a
+                  href="recharge.html?plan=Basic-Monthly&price=299&validity=28&data=1.5GB"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  Recharge Now
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+              <div class="card-body">
+                <h5 class="card-title">Standard Monthly</h5>
+                <p class="card-text">₹399 / 30 Days</p>
+                <p>2GB/Day + Free SMS</p>
+                <a
+                  href="recharge.html?plan=Standard-Monthly&price=399&validity=30&data=2GB"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  Recharge Now
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+              <div class="card-body">
+                <h5 class="card-title">Premium Monthly</h5>
+                <p class="card-text">₹499 / 30 Days</p>
+                <p>3GB/Day + OTT Subscription</p>
+                <a
+                  href="recharge.html?plan=Premium-Monthly&price=499&validity=30&data=3GB"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  Recharge Now
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm text-center">
-        <div class="card-body">
-          <h5 class="card-title">Standard Monthly</h5>
-          <p class="card-text">₹399 / 30 Days</p>
-          <p>2GB/Day + Free SMS</p>
-          <a href="recharge.html?plan=Standard-Monthly&price=399&validity=30&data=2GB"
-            class="btn btn-outline-primary rounded-pill px-4">
-            Recharge Now
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm text-center">
-        <div class="card-body">
-          <h5 class="card-title">Premium Monthly</h5>
-          <p class="card-text">₹499 / 30 Days</p>
-          <p>3GB/Day + OTT Subscription</p>
-          <a href="recharge.html?plan=Premium-Monthly&price=499&validity=30&data=3GB"
-            class="btn btn-outline-primary rounded-pill px-4">
-            Recharge Now
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Yearly Plans (Initially Hidden) -->
-  <div id="yearlyPlans" class="row d-none">
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm text-center">
-        <div class="card-body">
-          <h5 class="card-title">Basic Yearly</h5>
-          <p class="card-text">₹2499 / 365 Days</p>
-          <p>1.5GB/Day + Unlimited Calls</p>
-          <a href="recharge.html?plan=Basic-Yearly&price=2499&validity=365&data=1.5GB"
-            class="btn btn-outline-primary rounded-pill px-4">
-            Recharge Now
-          </a>
+        <!-- Yearly Plans (Initially Hidden) -->
+        <div id="yearlyPlans" class="row d-none">
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+              <div class="card-body">
+                <h5 class="card-title">Basic Yearly</h5>
+                <p class="card-text">₹2499 / 365 Days</p>
+                <p>1.5GB/Day + Unlimited Calls</p>
+                <a
+                  href="recharge.html?plan=Basic-Yearly&price=2499&validity=365&data=1.5GB"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  Recharge Now
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+              <div class="card-body">
+                <h5 class="card-title">Standard Yearly</h5>
+                <p class="card-text">₹2999 / 365 Days</p>
+                <p>2GB/Day + Free SMS</p>
+                <a
+                  href="recharge.html?plan=Standard-Yearly&price=2999&validity=365&data=2GB"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  Recharge Now
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+              <div class="card-body">
+                <h5 class="card-title">Premium Yearly</h5>
+                <p class="card-text">₹3999 / 365 Days</p>
+                <p>3GB/Day + OTT Subscription</p>
+                <a
+                  href="recharge.html?plan=Premium-Yearly&price=3999&validity=365&data=3GB"
+                  class="btn btn-outline-primary rounded-pill px-4"
+                >
+                  Recharge Now
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm text-center">
-        <div class="card-body">
-          <h5 class="card-title">Standard Yearly</h5>
-          <p class="card-text">₹2999 / 365 Days</p>
-          <p>2GB/Day + Free SMS</p>
-          <a href="recharge.html?plan=Standard-Yearly&price=2999&validity=365&data=2GB"
-            class="btn btn-outline-primary rounded-pill px-4">
-            Recharge Now
-          </a>
+
+        <!-- Button to Redirect to Plans Page -->
+        <div class="mt-4">
+          <a href="plans.html" class="btn btn-primary rounded-pill px-5 py-2"
+            >View All Plans</a
+          >
         </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm text-center">
-        <div class="card-body">
-          <h5 class="card-title">Premium Yearly</h5>
-          <p class="card-text">₹3999 / 365 Days</p>
-          <p>3GB/Day + OTT Subscription</p>
-          <a href="recharge.html?plan=Premium-Yearly&price=3999&validity=365&data=3GB"
-            class="btn btn-outline-primary rounded-pill px-4">
-            Recharge Now
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Button to Redirect to Plans Page -->
-  <div class="mt-4">
-    <a href="plans.html" class="btn btn-primary rounded-pill px-5 py-2">View All Plans</a>
-  </div>
-</section>
-
-
+      </section>
 
       <!-- promotion -->
       <!-- ad-1 -->
@@ -401,109 +492,139 @@
 
       <!-- Featured Plans Carousel -->
       <section id="featured-plans" class="container mt-5 mb-5">
-  <h2 class="text-center mb-4">Featured Plans</h2>
+        <h2 class="text-center mb-4">Featured Plans</h2>
 
-  <div id="plansCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <!-- First Slide -->
-      <div class="carousel-item active">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Unlimited Plan</h5>
-                <p class="card-text">₹299 / 28 Days</p>
-                <p>1.5GB/Day + Unlimited Calls</p>
-                <a href="recharge.html?plan=Unlimited-Plan&price=299&validity=28&data=1.5GB" class="btn btn-outline-primary rounded-pill px-4">
-                  Recharge Now
-                </a>
+        <div id="plansCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <!-- First Slide -->
+            <div class="carousel-item active">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Unlimited Plan</h5>
+                      <p class="card-text">₹299 / 28 Days</p>
+                      <p>1.5GB/Day + Unlimited Calls</p>
+                      <a
+                        href="recharge.html?plan=Unlimited-Plan&price=299&validity=28&data=1.5GB"
+                        class="btn btn-outline-primary rounded-pill px-4"
+                      >
+                        Recharge Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">3-Months Pack</h5>
+                      <p class="card-text">₹799 / 84 Days</p>
+                      <p>2GB/Day + OTT Subscription</p>
+                      <a
+                        href="recharge.html?plan=3-Months-Pack&price=799&validity=84&data=2GB"
+                        class="btn btn-outline-primary rounded-pill px-4"
+                      >
+                        Recharge Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Annual Plan</h5>
+                      <p class="card-text">₹2999 / 365 Days</p>
+                      <p>3GB/Day + Free SMS</p>
+                      <a
+                        href="recharge.html?plan=Annual-Plan&price=2999&validity=365&data=3GB"
+                        class="btn btn-outline-primary rounded-pill px-4"
+                      >
+                        Recharge Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Second Slide -->
+            <div class="carousel-item">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Super Saver Pack</h5>
+                      <p class="card-text">₹599 / 56 Days</p>
+                      <p>1.5GB/Day + 100 SMS/Day</p>
+                      <a
+                        href="recharge.html?plan=Super-Saver-Pack&price=599&validity=56&data=1.5GB"
+                        class="btn btn-outline-primary rounded-pill px-4"
+                      >
+                        Recharge Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Work From Home</h5>
+                      <p class="card-text">₹999 / 90 Days</p>
+                      <p>Unlimited Data + Calling</p>
+                      <a
+                        href="recharge.html?plan=Work-From-Home&price=999&validity=90&data=Unlimited"
+                        class="btn btn-outline-primary rounded-pill px-4"
+                      >
+                        Recharge Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Night Owl Plan</h5>
+                      <p class="card-text">₹399 / 30 Days</p>
+                      <p>Free Data 12AM - 6AM</p>
+                      <a
+                        href="recharge.html?plan=Night-Owl-Plan&price=399&validity=30&data=Night-Data"
+                        class="btn btn-outline-primary rounded-pill px-4"
+                      >
+                        Recharge Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">3-Months Pack</h5>
-                <p class="card-text">₹799 / 84 Days</p>
-                <p>2GB/Day + OTT Subscription</p>
-                <a href="recharge.html?plan=3-Months-Pack&price=799&validity=84&data=2GB" class="btn btn-outline-primary rounded-pill px-4">
-                  Recharge Now
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Annual Plan</h5>
-                <p class="card-text">₹2999 / 365 Days</p>
-                <p>3GB/Day + Free SMS</p>
-                <a href="recharge.html?plan=Annual-Plan&price=2999&validity=365&data=3GB" class="btn btn-outline-primary rounded-pill px-4">
-                  Recharge Now
-                </a>
-              </div>
-            </div>
-          </div>
+
+          <!-- Carousel Controls -->
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#plansCarousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#plansCarousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
         </div>
-      </div>
 
-      <!-- Second Slide -->
-      <div class="carousel-item">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Super Saver Pack</h5>
-                <p class="card-text">₹599 / 56 Days</p>
-                <p>1.5GB/Day + 100 SMS/Day</p>
-                <a href="recharge.html?plan=Super-Saver-Pack&price=599&validity=56&data=1.5GB" class="btn btn-outline-primary rounded-pill px-4">
-                  Recharge Now
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Work From Home</h5>
-                <p class="card-text">₹999 / 90 Days</p>
-                <p>Unlimited Data + Calling</p>
-                <a href="recharge.html?plan=Work-From-Home&price=999&validity=90&data=Unlimited" class="btn btn-outline-primary rounded-pill px-4">
-                  Recharge Now
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Night Owl Plan</h5>
-                <p class="card-text">₹399 / 30 Days</p>
-                <p>Free Data 12AM - 6AM</p>
-                <a href="recharge.html?plan=Night-Owl-Plan&price=399&validity=30&data=Night-Data" class="btn btn-outline-primary rounded-pill px-4">
-                  Recharge Now
-                </a>
-              </div>
-            </div>
-          </div>
+        <!-- Button to Redirect to Plans Page -->
+        <div class="mt-4 text-center">
+          <a href="plans.html" class="btn btn-primary rounded-pill px-5 py-2"
+            >View All Plans</a
+          >
         </div>
-      </div>
-    </div>
-
-    <!-- Carousel Controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#plansCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#plansCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    </button>
-  </div>
-
-  <!-- Button to Redirect to Plans Page -->
-  <div class="mt-4 text-center">
-    <a href="plans.html" class="btn btn-primary rounded-pill px-5 py-2">View All Plans</a>
-  </div>
-</section>
+      </section>
 
       <!-- FAQ Section -->
       <section id="faq" class="py-5">
@@ -849,11 +970,11 @@
           document.getElementById("monthlyBtn").classList.remove("btn-primary");
         });
     </script>
-        <!-- JavaScript Function to Handle Logout -->
-<script>
-  function logout() {
-    window.location.href = "index.html"; // Redirect to login/home page after logout
-  }
-</script>
+    <!-- JavaScript Function to Handle Logout -->
+    <script>
+      function logout() {
+        window.location.href = "index.html"; // Redirect to login/home page after logout
+      }
+    </script>
   </body>
 </html>
