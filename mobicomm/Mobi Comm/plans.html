@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plans - Mobi Comm</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/main.min.css" />
+    <style>
+      :root {
+        --primary: #970747;
+        --btn-hover-bg: #a12059;
+        --btn-active-bg: #880640;
+        --secondary: #eacdda;
+      }
+      body {
+        font-family: sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+
+      }
+      main {
+        flex: 1;
+      }
+      /* Card Container */
+      .card-container {
+        width: 260px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--btn-hover-bg) 40%,
+          var(--btn-active-bg) 65%,
+          var(--secondary) 100%
+        );
+        padding: 4px;
+        border-radius: 32px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 20px auto;
+        position: relative;
+        height: 400px; /* Fixed height for uniformity */
+      }
+      .card-container:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      }
+      /* Glowing and Moving Outline */
+      .card-container::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        background: linear-gradient(
+          45deg,
+          var(--primary),
+          var(--secondary),
+          var(--primary)
+        );
+        border-radius: 36px;
+        z-index: -1;
+        filter: blur(8px);
+        animation: glow 5s infinite linear;
+      }
+      @keyframes glow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      /* Title Card */
+      .title-card {
+        padding: 16px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        position: relative;
+      }
+      .title-card p {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 6px #2975ee;
+      }
+      /* Card Content */
+      .card-content {
+        background: #fff;
+        border-radius: 28px;
+        padding: 20px;
+        text-align: center;
+        color: #333;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 0.6s forwards;
+        display: flex;
+        flex-direction: column;
+        height: calc(99% - 52px); /* Adjust for title-card height */
+      }
+      @keyframes slideUp {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .card-content .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .card-content .plain {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 0;
+        color: var(--primary);
+      }
+      .card-content .plain span {
+        font-size: 14px;
+        color: #777;
+        margin-left: 4px;
+      }
+      .card-content .description {
+        font-size: 14px;
+        color: #555;
+        margin: 12px 0;
+        flex-grow: 1; /* Ensure uniform height by stretching description */
+      }
+      /* Card Button */
+      .card-btn {
+        background: var(--primary);
+        border: none;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .card-btn:hover {
+        background: var(--btn-hover-bg);
+        transform: scale(1.03);
+      }
+      .card-btn:active {
+        background: var(--btn-active-bg);
+        transform: scale(1);
+      }
+      /* Card Features List */
+      .card-list-features {
+        text-align: left;
+        font-size: 13px;
+        color: #777;
+        margin-top: 12px;
+      }
+      .card-list-features .option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .card-list-features svg {
+        flex-shrink: 0;
+      }
+      /* Dynamic Tabs */
+      .nav-tabs {
+        border-bottom: 2px solid var(--primary);
+      }
+      .nav-tabs .nav-link {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .nav-tabs .nav-link.active {
+        background-color: var(--primary);
+        color: #fff;
+      }
+      /* Sidebar Styles */
+      .sidebar {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px); /* Extend to bottom */
+        overflow-y: auto;
+      }
+      .search-bar {
+        margin-bottom: 20px;
+      }
+
+      /* Responsive Alterations for Small Screens */
+      @media (min-width: 768px) {
+        #sidebarOffcanvas {
+          transform: none !important;
+          visibility: visible !important;
+          position: sticky;
+          top: 70px;
+          height: calc(100vh - 70px);
+          overflow-y: auto;
+          width: 100%;
+        }
+        #sidebarOffcanvas .offcanvas-header {
+          display: none; /* Hide header on md and lg screens */
+        }
+        #sidebarOffcanvas .offcanvas-body {
+          padding: 20px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      @media (max-width: 767px) {
+        .card-container {
+          width: 100%;
+          height: auto;
+        }
+        .card-content {
+          height: auto;
+        }
+      }
+
+      /* Fix for Large Screens (lg) */
+      @media (min-width: 992px) {
+        #sidebarOffcanvas {
+          position: sticky;
+          top: 70px; /* Below the fixed navbar */
+          height: calc(100vh - 70px); /* Adjust height to fit viewport */
+          overflow-y: auto; /* Allow internal scrolling if content overflows */
+          z-index: 1000; /* Ensure it stays above other content */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header & Navbar -->
+    <header>
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top mb-5"
+      >
+        <div class="container-fluid">
+          <a
+            href="main.html"
+            class="navbar-brand fw-bold text-white d-flex align-items-center"
+          >
+            <img
+              src="assets/logo plain.png"
+              alt="Logo"
+              width="50"
+              height="30"
+              class="me-2"
+            />
+            MOBI COMM
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarScroll"
+            aria-controls="navbarScroll"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav nav-underline me-auto">
+              <li class="nav-item">
+                <a class="nav-link text-white" href="main.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active text-white" href="plans.html"
+                  >Plans</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="about.html">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="help.html">Help</a>
+              </li>
+            </ul>
+            
+              <a
+                href="#"
+                class="text-white me-3 position-relative"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationModal"
+              >
+                <i class="fa-solid fa-bell fa-lg"></i>
+                <span
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  >3</span
+                >
+              </a>
+              <div class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle text-white"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="fa-solid fa-circle-user fa-lg"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="profile.html">My Profile</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item text-danger"
+                      href="#"
+                      data-bs-toggle="modal"
+                      data-bs-target="#logoutModal"
+                      >Logout</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Notification Modal -->
+    <div
+      class="modal fade"
+      id="notificationModal"
+      tabindex="-1"
+      aria-labelledby="notificationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="notificationModalLabel">
+              Recharge Reminder
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Don't forget to recharge your account to continue enjoying
+              uninterrupted services!
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Okay, Got It
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="logoutModalLabel">
+              Logout Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+            >
+              Stay
+            </button>
+            <button type="button" class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mt-5 pt-5">
+      <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-md-3 col-lg-2">
+          <div
+            class="offcanvas offcanvas-start"
+            id="sidebarOffcanvas"
+            tabindex="-1"
+            aria-labelledby="sidebarOffcanvasLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">
+                Filters
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body">
+              <h5 class="fw-bold text-primary mb-4">Filters</h5>
+              <div class="search-bar">
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  id="searchInput"
+                  placeholder="Search Plans"
+                  oninput="applyFilters()"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Price Range</label>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priceFilter"
+                    id="priceAll"
+                    value="all"
+                    checked
+                    onchange="applyFilters()"
+                  />
+                  <label class="form-check-label" for="priceAll"
+                    >All Prices</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priceFilter"
+                    id="priceUnder100"
+                    value="under100"
+                    onchange="applyFilters()"
+                  />
+                  <label class="form-check-label" for="priceUnder100"
+                    >Under ₹100</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priceFilter"
+                    id="price100to500"
+                    value="100to500"
+                    onchange="applyFilters()"
+                  />
+                  <label class="form-check-label" for="price100to500"
+                    >₹100 - ₹500</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priceFilter"
+                    id="priceAbove500"
+                    value="above500"
+                    onchange="applyFilters()"
+                  />
+                  <label class="form-check-label" for="priceAbove500"
+                    >Above ₹500</label
+                  >
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Custom Price Range</label>
+                <input
+                  type="range"
+                  class="form-range"
+                  min="0"
+                  max="2000"
+                  value="2000"
+                  id="priceRange"
+                  oninput="updatePriceLabel(this.value); applyFilters()"
+                />
+                <small id="priceLabel" class="text-muted">Up to ₹2000</small>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Sort By</label>
+                <select
+                  class="form-select"
+                  name="sortBy"
+                  onchange="applyFilters()"
+                >
+                  <option value="default">Default</option>
+                  <option value="priceAsc">Price: Low to High</option>
+                  <option value="priceDesc">Price: High to Low</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plans Content -->
+        <div class="col-md-9 col-lg-10">
+          <div class="d-md-none mb-3">
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#sidebarOffcanvas"
+              aria-controls="sidebarOffcanvas"
+            >
+              <i class="fa-solid fa-filter"></i> Filters
+            </button>
+          </div>
+          <div
+            class="sticky-top bg-white shadow-sm"
+            style="top: 56px; z-index: 1020"
+          >
+            <nav>
+              <div
+                id="nav-tab"
+                class="nav nav-tabs container flex-nowrap text-nowrap"
+                style="overflow-x: auto"
+                role="tablist"
+              ></div>
+            </nav>
+          </div>
+          <div style="height: 20px"></div>
+          <div id="nav-tabContent" class="tab-content"></div>
+        </div>
+      </div>
+    </main>
+
+      <!-- FAQ Section -->
+      <section id="faq" class="py-5">
+        <div class="container d-flex justify-content-center">
+          <div class="col-lg-8 col-md-10">
+            <div class="h3 text-center text-body-dark mb-4" id="FAQ">FAQs</div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                  >
+                    How can I check my recharge history?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can check your recharge history in the "My Transactions"
+                    or "Recharge History" section in the app.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo"
+                  >
+                    What should I do if my recharge fails but the money is
+                    deducted?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseTwo"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    The amount will be refunded within 24-48 hours. Contact
+                    support with the transaction ID if not received.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree"
+                  >
+                    Can I cancel a recharge after payment?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    No, once a recharge is processed successfully, it cannot be
+                    canceled or refunded.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New FAQ 1 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFour"
+                  >
+                    How can I change my registered mobile number?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFour"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can update your registered mobile number through the
+                    "Profile" section of the app or website.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New FAQ 2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFive"
+                  >
+                    What are the available payment methods?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFive"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    We accept payments via credit/debit cards, net banking, UPI,
+                    and digital wallets.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New FAQ 3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseSix"
+                  >
+                    How can I contact customer support?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseSix"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can reach customer support through the "Help" section in
+                    the app or call our toll-free number.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    <!-- Footer -->
+    <footer
+      class="bg-dark text-white py-5 w-100 mt-5 section-animate"
+      data-aos="fade-up"
+    >
+      <div class="container">
+        <div class="row">
+          <!-- Company Info -->
+          <div class="col-md-4 mb-3">
+            <h5>MOBI COMM</h5>
+            <p>
+              Stay connected with the best network provider. Fast, reliable, and
+              always available.
+            </p>
+          </div>
+          <!-- Quick Links -->
+          <div class="col-md-2 mb-3">
+            <h5>Quick Links</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="plans.html" class="nav-link p-0 text-white-50">Plans</a>
+              </li>
+              <li class="nav-item">
+                <a href="about.html" class="nav-link p-0 text-white-50">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a href="help.html" class="nav-link p-0 text-white-50">Help</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Support -->
+          <div class="col-md-2 mb-3">
+            <h5>Support</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="#faq" class="nav-link p-0 text-white-50">FAQs</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50">Contact Us</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50">Terms & Conditions</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50">Privacy Policy</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Feedback Form -->
+          <div class="col-lg-3 col-md-12 col-12 mb-3">
+            <h5>Feedback</h5>
+            <form>
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <textarea
+                  class="form-control"
+                  rows="2"
+                  placeholder="Your Feedback"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm w-100">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+        <hr class="border-white-50 my-4" />
+        <div class="d-flex flex-column flex-sm-row justify-content-between">
+          <p class="mb-0">© 2025 Mobi Comm. All Rights Reserved.</p>
+          <ul class="list-unstyled d-flex gap-3">
+            <li>
+              <a href="https://www.facebook.com" target="blank" class="text-white-50 me-3">
+                <i class="fa-brands fa-facebook fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.twitter.com" target="blank" class="text-white-50 me-3">
+                <i class="fa-brands fa-twitter fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com" target="blank" class="text-white-50 me-3">
+                <i class="fa-brands fa-instagram fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com" target="blank" class="text-white-50 me-3">
+                <i class="fa-brands fa-linkedin fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com" target="blank" class="text-white-50 me-3">
+                <i class="fa-brands fa-youtube fs-2"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let allPlans = [];
+
+      function updatePriceLabel(value) {
+        document.getElementById("priceLabel").textContent = `Up to ₹${value}`;
+      }
+
+      function renderPlans(data) {
+        const distinctCategories = [
+          ...new Set(
+            data
+              .map((plan) => plan.category)
+              .filter((cat) => cat && cat.trim() !== "")
+          ),
+        ];
+        const baseCategories = [
+          "Recommended",
+          "Super Hero",
+          "Hero Unlimited",
+          "OTT",
+          "Combo / Validity",
+          "Data",
+          "Top Up",
+          "Plan Voucher",
+        ];
+        const fixedCategories = baseCategories.filter((cat) =>
+          distinctCategories.includes(cat)
+        );
+        const newCategories = distinctCategories.filter(
+          (cat) => !baseCategories.includes(cat)
+        );
+        const tabsOrder = [
+          ...fixedCategories,
+          ...newCategories.sort(),
+          "All Plans",
+        ];
+
+        const navTabContainer = document.getElementById("nav-tab");
+        navTabContainer.innerHTML = "";
+        tabsOrder.forEach((cat, index) => {
+          const isActive = index === 0;
+          const slug = cat.toLowerCase().replace(/\s+/g, "-");
+          const button = document.createElement("button");
+          button.classList.add("nav-link");
+          if (isActive) button.classList.add("active");
+          button.setAttribute("data-bs-toggle", "tab");
+          button.setAttribute("data-bs-target", `#nav-${slug}`);
+          button.setAttribute("type", "button");
+          button.setAttribute("role", "tab");
+          button.textContent = cat;
+          navTabContainer.appendChild(button);
+        });
+
+        const tabContentContainer = document.getElementById("nav-tabContent");
+        tabContentContainer.innerHTML = "";
+        tabsOrder.forEach((cat, index) => {
+          const isActive = index === 0;
+          const slug = cat.toLowerCase().replace(/\s+/g, "-");
+          const div = document.createElement("div");
+          div.classList.add("tab-pane", "fade");
+          if (isActive) div.classList.add("show", "active");
+          div.id = `nav-${slug}`;
+          div.setAttribute("role", "tabpanel");
+          const innerContainer = document.createElement("div");
+          innerContainer.classList.add("container", "py-3");
+          const rowDiv = document.createElement("div");
+          rowDiv.classList.add(
+            "row",
+            "row-cols-1",
+            "row-cols-md-2",
+            "row-cols-lg-3",
+            "g-4"
+          );
+          innerContainer.appendChild(rowDiv);
+          div.appendChild(innerContainer);
+          tabContentContainer.appendChild(div);
+        });
+
+        function generatePlanCard(plan) {
+          const rechargeUrl = `recharge.html?plan_id=${encodeURIComponent(
+            plan.plan_id
+          )}&plan_name=${encodeURIComponent(
+            plan.plan_name
+          )}&price=${encodeURIComponent(
+            plan.price
+          )}&validity=${encodeURIComponent(
+            plan.validity
+          )}&data=${encodeURIComponent(plan.data || "")}`;
+          const titleText = plan.badge || plan.category;
+          const badgeIcon =
+            plan.badge === "Best Value"
+              ? '<i class="fa-solid fa-crown"></i>'
+              : plan.badge === "Popular"
+              ? '<i class="fa-solid fa-star"></i>'
+              : plan.badge
+              ? '<i class="fa-solid fa-trophy"></i>'
+              : "";
+          return `
+            <div class="col">
+              <div class="card-container">
+                <div class="title-card">
+                  <p>${titleText}</p>
+                  ${badgeIcon}
+                </div>
+                <div class="card-content">
+                  <p class="title">${plan.plan_name}</p>
+                  <p class="plain">₹${plan.price}<span> / ${
+            plan.validity
+          }</span></p>
+                  <p class="description">${
+                    plan.benefits ||
+                    plan.data ||
+                    plan.talktime ||
+                    "Enjoy unlimited benefits with this plan."
+                  }</p>
+                  <button class="card-btn" onclick="window.location.href='${rechargeUrl}'">Recharge Now</button>
+                  <div class="card-list-features">
+                    <div class="option">
+                      <svg viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none">
+                          <rect rx="4" y="3" x="3" height="18" width="18"></rect>
+                          <path d="m9 12l2.25 2L15 10"></path>
+                        </g>
+                      </svg>
+                      <span>${
+                        plan.benefits && plan.benefits.includes("Unlimited")
+                          ? "Unlimited Calls"
+                          : "Limited Calls"
+                      }</span>
+                    </div>
+                    <div class="option">
+                      <svg viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none">
+                          <rect rx="4" y="3" x="3" height="18" width="18"></rect>
+                          <path d="m9 12l2.25 2L15 10"></path>
+                        </g>
+                      </svg>
+                      <span>${plan.data || "No Data"}</span>
+                    </div>
+                    <div class="option">
+                      <svg viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none">
+                          <rect rx="4" y="3" x="3" height="18" width="18"></rect>
+                          <path d="m9 12l2.25 2L15 10"></path>
+                        </g>
+                      </svg>
+                      <span>Refund Guarantee</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        function renderPlansForCategory(category, plansData) {
+          const slug = category.toLowerCase().replace(/\s+/g, "-");
+          const container = document
+            .getElementById(`nav-${slug}`)
+            .querySelector(".row");
+          container.innerHTML = "";
+          const plansToRender =
+            category === "All Plans"
+              ? plansData
+              : plansData.filter((plan) => plan.category === category);
+          plansToRender.forEach(
+            (plan) => (container.innerHTML += generatePlanCard(plan))
+          );
+        }
+
+        tabsOrder.forEach((category) => renderPlansForCategory(category, data));
+      }
+
+      function applyFilters() {
+        let filtered = allPlans;
+
+        const searchQuery = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        if (searchQuery) {
+          filtered = filtered.filter(
+            (plan) =>
+              (plan.plan_name &&
+                plan.plan_name.toLowerCase().includes(searchQuery)) ||
+              (plan.price && plan.price.toLowerCase().includes(searchQuery)) ||
+              (plan.validity &&
+                plan.validity.toLowerCase().includes(searchQuery)) ||
+              (plan.data && plan.data.toLowerCase().includes(searchQuery)) ||
+              (plan.benefits &&
+                plan.benefits.toLowerCase().includes(searchQuery)) ||
+              (plan.category &&
+                plan.category.toLowerCase().includes(searchQuery)) ||
+              (plan.badge && plan.badge.toLowerCase().includes(searchQuery))
+          );
+        }
+
+        const priceRadio = document.querySelector(
+          'input[name="priceFilter"]:checked'
+        ).value;
+        if (priceRadio !== "all") {
+          filtered = filtered.filter((plan) => {
+            const price = parseFloat(plan.price);
+            if (isNaN(price)) return false;
+            switch (priceRadio) {
+              case "under100":
+                return price < 100;
+              case "100to500":
+                return price >= 100 && price <= 500;
+              case "above500":
+                return price > 500;
+              default:
+                return true;
+            }
+          });
+        }
+
+        const maxPrice = parseFloat(
+          document.getElementById("priceRange").value
+        );
+        filtered = filtered.filter(
+          (plan) => parseFloat(plan.price) <= maxPrice
+        );
+
+        const sortBy = document.querySelector('select[name="sortBy"]').value;
+        if (sortBy === "priceAsc") {
+          filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        } else if (sortBy === "priceDesc") {
+          filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        }
+
+        renderPlans(filtered);
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const mockData = [
+          {
+            plan_id: "1",
+            plan_name: "Basic Plan",
+            price: "299",
+            validity: "28 Days",
+            data: "1.5GB/Day",
+            benefits: "Unlimited Calls",
+            category: "Recommended",
+            badge: "Best Value",
+          },
+          {
+            plan_id: "2",
+            plan_name: "Standard Plan",
+            price: "499",
+            validity: "28 Days",
+            data: "2GB/Day",
+            benefits: "Unlimited Calls + SMS",
+            category: "Combo / Validity",
+          },
+          {
+            plan_id: "3",
+            plan_name: "Data Boost",
+            price: "199",
+            validity: "28 Days",
+            data: "3GB/Day",
+            benefits: "Data Only",
+            category: "Data",
+          },
+          {
+            plan_id: "4",
+            plan_name: "Premium Plan",
+            price: "799",
+            validity: "56 Days",
+            data: "2GB/Day",
+            benefits: "OTT + Calls",
+            category: "Recommended",
+            badge: "Popular",
+          },
+        ];
+
+        fetch("http://localhost:3001/plans")
+          .then((response) => response.json())
+          .then((data) => {
+            allPlans = data;
+            renderPlans(allPlans);
+          })
+          .catch((error) => {
+            console.error("Error fetching plans:", error);
+            allPlans = mockData;
+            renderPlans(allPlans);
+          });
+      });
+
+      function logout() {
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>

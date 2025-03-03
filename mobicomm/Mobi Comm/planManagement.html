@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plan Management</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <!-- Chart.js for the ring graph (if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="/css/main1.min.css" />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+    <style>
+      /* Optional: custom styles can be added here */
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav class="navbar navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand d-flex align-items-center">
+            <img
+              src="assets/logo plain.png"
+              alt="Logo"
+              width="40"
+              height="30"
+              class="me-2"
+            />
+            <span class="fw-bold">MOBI COMM - Admin</span>
+          </a>
+          <div class="d-flex align-items-center">
+            <span class="text-white me-3">Admin</span>
+            <img
+              src="assets/avatar.webp"
+              alt="Admin Avatar"
+              width="40"
+              height="40"
+              class="rounded-circle"
+            />
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="d-flex mt-5">
+      <!-- Sidebar -->
+      <div class="bg-light vh-100 p-3" style="width: 250px">
+        <a
+          href="admin.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+        >
+          <i class="fa-solid fa-chart-line me-2"></i>Dashboard
+        </a>
+        <a
+          href="userManagement.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+        >
+          <i class="fa-solid fa-users me-2"></i>User Management
+        </a>
+        <a
+          href="planManagement.html"
+          class="text-primary text-decoration-none d-block p-2 rounded active"
+          style="background-color: #a3c9eb"
+        >
+          <i class="fa-solid fa-list me-2"></i>Plan Management
+        </a>
+        <a
+          href="transactions.html"
+          class="text-primary text-decoration-none d-block p-2 rounded hover-bg-secondary"
+        >
+          <i class="fa-solid fa-money-check-alt me-2"></i>Transactions
+        </a>
+        <a
+          href="#"
+          class="text-danger text-decoration-none d-block p-2 rounded hover-bg-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#logoutModal"
+        >
+          <i class="fa-solid fa-sign-out-alt me-2"></i>Logout
+        </a>
+      </div>
+
+      <!-- Main Section -->
+      <div class="container-fluid mt-5 ms-3">
+        <h2 class="mt-4">Plan Management</h2>
+
+        <!-- Summary Cards: Total Plans, Active Plans & Inactive Plans -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="card text-dark" style="background-color: #a3c9eb">
+              <div class="card-body fw-bold">
+                <h5 class="card-title">Total Plans</h5>
+                <h3 class="card-text" id="totalPlans">0</h3>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-6">
+                <div
+                  class="card text-dark"
+                  style="background-color: rgb(231, 218, 244)"
+                >
+                  <div class="card-body p-2">
+                    <h6 class="card-title">Active Plans</h6>
+                    <p class="card-text" id="activePlans">0</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div
+                  class="card text-dark"
+                  style="background-color: #d1e7dd; font-size: 0.9rem"
+                >
+                  <div class="card-body p-2">
+                    <h6 class="card-title">Inactive Plans</h6>
+                    <p class="card-text" id="inactivePlans">0</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- (Optional: Ring Graph if needed) -->
+          <div class="col-md-6">
+            <div class="card text-dark">
+              <div class="card-body">
+                <h5 class="card-title">Plan Subscribers by Category</h5>
+                <div style="position: relative; height: 250px">
+                  <canvas id="categoryChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search, Filter & Add Plan -->
+        <div class="d-flex justify-content-between my-3">
+          <div class="d-flex align-items-center gap-2">
+            <input
+              type="text"
+              id="searchBox"
+              class="form-control"
+              placeholder="Search"
+              style="width: 200px"
+            />
+            <select
+              class="form-select"
+              id="categoryFilter"
+              style="width: 150px"
+            >
+              <option value="" selected>All category</option>
+              <!-- Categories will be populated dynamically -->
+            </select>
+          </div>
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#addPlanModal"
+          >
+            <i class="fa fa-plus"></i> Add Plan
+          </button>
+        </div>
+
+        <!-- Plans Table -->
+        <div class="card p-3">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>Plan ID</th>
+                  <th>Category</th>
+                  <th>Plan Name</th>
+                  <th>Price</th>
+                  <th>Validity</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="planTableBody">
+                <!-- Table rows will be inserted dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Plan Modal -->
+    <div
+      class="modal fade"
+      id="addPlanModal"
+      data-bs-backdrop="static"
+      tabindex="-1"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Plan</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addPlanForm">
+              <div class="mb-3">
+                <label class="form-label">Plan ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="planId"
+                  placeholder="Enter plan ID"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Category</label>
+                <!-- Dropdown will be updated dynamically -->
+                <select
+                  class="form-control"
+                  id="category"
+                  required
+                  onchange="toggleCustomCategory('add')"
+                >
+                  <option value="" disabled selected>Select a category</option>
+                  <option value="Recommended">Recommended</option>
+                  <option value="Super Hero">Super Hero</option>
+                  <option value="Hero Unlimited">Hero Unlimited</option>
+                  <option value="OTT">OTT</option>
+                  <option value="Combo / Validity">Combo / Validity</option>
+                  <option value="Data">Data</option>
+                  <option value="Top Up">Top Up</option>
+                  <option value="Plan Voucher">Plan Voucher</option>
+                  <option value="Other">New Category</option>
+                </select>
+              </div>
+              <!-- Custom category input for add modal -->
+              <div class="mb-3" id="customCategoryDivAdd" style="display: none">
+                <label class="form-label">Custom Category</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customCategoryAdd"
+                  placeholder="Enter custom category"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Plan Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="planName"
+                  placeholder="Enter plan name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Price (₹)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  placeholder="Enter plan price"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Data</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="data"
+                  placeholder="e.g., 2GB/day or 10GB"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Validity (Days)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="validity"
+                  placeholder="Enter validity in days"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Benefits</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="benefits"
+                  placeholder="Enter benefits (if any)"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Badge</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="badge"
+                  placeholder="Enter badge (if any)"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" id="status" required>
+                  <option value="active" selected>Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">Add Plan</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Plan Modal -->
+    <div
+      class="modal fade"
+      id="editPlanModal"
+      data-bs-backdrop="static"
+      tabindex="-1"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Plan</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editPlanForm">
+              <!-- Hidden field to store JSON Server record id -->
+              <input type="hidden" id="recordId" />
+              <div class="mb-3">
+                <label class="form-label">Plan ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editPlanId"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Category</label>
+                <!-- Dropdown will be updated dynamically -->
+                <select
+                  class="form-control"
+                  id="editCategory"
+                  required
+                  onchange="toggleCustomCategory('edit')"
+                ></select>
+              </div>
+              <!-- Custom category input for edit modal -->
+              <div
+                class="mb-3"
+                id="customCategoryDivEdit"
+                style="display: none"
+              >
+                <label class="form-label">Custom Category</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customCategoryEdit"
+                  placeholder="Enter custom category"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Plan Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editPlanName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Price (₹ Fixed)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="editPrice"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Data</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editData"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Validity (Days)</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editValidity"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Benefits</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editBenefits"
+                  placeholder="Enter benefits (if any)"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Badge</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editBadge"
+                  placeholder="Enter badge (if any)"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" id="editStatus" required>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Plan Modal -->
+    <div
+      class="modal fade"
+      id="viewPlanModal"
+      data-bs-backdrop="static"
+      tabindex="-1"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Plan Details</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" id="viewPlanContent">
+            <!-- Plan details will be dynamically inserted here as a table row or card -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Logout Confirmation</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+            >
+              Stay
+            </button>
+            <button type="button" class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Logout Function -->
+    <script>
+      function logout() {
+        window.location.href = "index.html";
+      }
+    </script>
+
+    <!-- Dynamic Data & Modal Dropdowns -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let plans = [];
+        let transactions = [];
+        // Global variable for category chart if needed
+        let categoryChart;
+
+        // Toggle custom category field display for add and edit modals.
+        function toggleCustomCategory(mode) {
+          if (mode === "add") {
+            const selected = document.getElementById("category").value;
+            document.getElementById("customCategoryDivAdd").style.display =
+              selected === "Other" ? "block" : "none";
+          } else if (mode === "edit") {
+            const selected = document.getElementById("editCategory").value;
+            document.getElementById("customCategoryDivEdit").style.display =
+              selected === "Other" ? "block" : "none";
+          }
+        }
+        window.toggleCustomCategory = toggleCustomCategory;
+
+        // Update the category filter dropdown (for table filtering)
+        function updateCategoryFilter() {
+          const filterSelect = document.getElementById("categoryFilter");
+          filterSelect.innerHTML = `<option value="" selected>All category</option>`;
+          const distinctCategories = [
+            ...new Set(plans.map((plan) => plan.category)),
+          ];
+          distinctCategories.forEach((category) => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            filterSelect.appendChild(option);
+          });
+        }
+
+        // Update the category dropdowns in the Add and Edit modals dynamically.
+        function updateModalCategoryDropdowns(categories) {
+          // For Add Plan Modal
+          const addDropdown = document.getElementById("category");
+          addDropdown.innerHTML =
+            '<option value="" disabled selected>Select a category</option>';
+          categories.forEach((cat) => {
+            const option = document.createElement("option");
+            option.value = cat;
+            option.textContent = cat;
+            addDropdown.appendChild(option);
+          });
+          // Always include "New Category" option
+          const otherOptionAdd = document.createElement("option");
+          otherOptionAdd.value = "Other";
+          otherOptionAdd.textContent = "New Category";
+          addDropdown.appendChild(otherOptionAdd);
+
+          // For Edit Plan Modal
+          const editDropdown = document.getElementById("editCategory");
+          editDropdown.innerHTML = "";
+          categories.forEach((cat) => {
+            const option = document.createElement("option");
+            option.value = cat;
+            option.textContent = cat;
+            editDropdown.appendChild(option);
+          });
+          // Always include "New Category" option
+          const otherOptionEdit = document.createElement("option");
+          otherOptionEdit.value = "Other";
+          otherOptionEdit.textContent = "New Category";
+          editDropdown.appendChild(otherOptionEdit);
+        }
+
+        // Render plan table with data.
+        function renderPlanTable(plansData) {
+          const tbody = document.getElementById("planTableBody");
+          tbody.innerHTML = "";
+          plansData.forEach((plan) => {
+            tbody.innerHTML += `
+              <tr>
+                <td>${plan.plan_id}</td>
+                <td>${plan.category}</td>
+                <td>${plan.plan_name}</td>
+                <td>₹${plan.price}</td>
+                <td>${plan.validity}</td>
+                <td class="${
+                  plan.status.toLowerCase() === "active"
+                    ? "text-success"
+                    : "text-danger"
+                }">
+                  ${plan.status}
+                </td>
+                <td>
+                  <button class="btn btn-outline-success btn-sm" onclick="confirmEdit('${
+                    plan.plan_id
+                  }')">Edit</button>
+                  <button class="btn btn-outline-warning btn-sm" onclick="viewPlan('${
+                    plan.plan_id
+                  }')">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          });
+        }
+
+        // Fetch plans data from the JSON server.
+        async function fetchPlans() {
+          try {
+            let response = await fetch("http://localhost:3001/plans");
+            let data = await response.json();
+            plans = data;
+            renderPlanTable(data);
+            updateCategoryFilter();
+            // Update modal dropdowns with distinct categories.
+            const distinctCategories = [
+              ...new Set(
+                data
+                  .map((plan) => plan.category)
+                  .filter((cat) => cat && cat.trim() !== "")
+              ),
+            ];
+            updateModalCategoryDropdowns(distinctCategories);
+            updatePlanStatusCounts();
+          } catch (error) {
+            console.error("Error fetching plans:", error);
+          }
+        }
+
+        // (Optional) Fetch transactions data if needed for the category graph.
+        async function fetchTransactions() {
+          try {
+            let response = await fetch("http://localhost:3001/transactions");
+            let data = await response.json();
+            transactions = data;
+            updateCategoryGraph();
+          } catch (error) {
+            console.error("Error fetching transactions:", error);
+          }
+        }
+
+        // Update active and inactive plan counts.
+        function updatePlanStatusCounts() {
+          const total = plans.length;
+          const activeCount = plans.filter(
+            (p) => p.status && p.status.toLowerCase() === "active"
+          ).length;
+          const inactiveCount = plans.filter(
+            (p) => p.status && p.status.toLowerCase() === "inactive"
+          ).length;
+          document.getElementById("totalPlans").textContent = total;
+          document.getElementById("activePlans").textContent = activeCount;
+          document.getElementById("inactivePlans").textContent = inactiveCount;
+        }
+
+        // (Optional) Update the Category Ring Graph using transactions data.
+        function updateCategoryGraph() {
+          const distinctCategories = [...new Set(plans.map((p) => p.category))];
+          const categoryCounts = {};
+          distinctCategories.forEach((cat) => {
+            categoryCounts[cat] = 0;
+          });
+          transactions.forEach((txn) => {
+            const plan = plans.find(
+              (p) => p.plan_id.toLowerCase() === txn.plan_id.toLowerCase()
+            );
+            if (plan) {
+              const cat = plan.category;
+              categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+            }
+          });
+          const categories = distinctCategories;
+          const data = categories.map((cat) => categoryCounts[cat]);
+          const ctx = document.getElementById("categoryChart").getContext("2d");
+          if (categoryChart) {
+            categoryChart.data.labels = categories;
+            categoryChart.data.datasets[0].data = data;
+            categoryChart.options.plugins.tooltip.callbacks.label = function (
+              context
+            ) {
+              const index = context.dataIndex;
+              const cat = categories[index];
+              const count = categoryCounts[cat];
+              return `${cat}: Subscribers: ${count}`;
+            };
+            categoryChart.update();
+          } else {
+            categoryChart = new Chart(ctx, {
+              type: "doughnut",
+              data: {
+                labels: categories,
+                datasets: [
+                  {
+                    label: "Subscribers",
+                    data: data,
+                    backgroundColor: [
+                      "#FF6384",
+                      "#36A2EB",
+                      "#FFCE56",
+                      "#4BC0C0",
+                      "#9966FF",
+                      "#8e44ad",
+                      "#3498db",
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: function (context) {
+                        const index = context.dataIndex;
+                        const cat = categories[index];
+                        const count = categoryCounts[cat];
+                        return `${cat}: Subscribers: ${count}`;
+                      },
+                    },
+                  },
+                },
+              },
+            });
+          }
+        }
+
+        // Edit functions.
+        function confirmEdit(planId) {
+          if (confirm("Are you sure you want to edit this plan?")) {
+            editPlan(planId);
+          }
+        }
+        window.confirmEdit = confirmEdit;
+
+        function editPlan(planId) {
+          let plan = plans.find((p) => p.plan_id === planId);
+          if (plan) {
+            document.getElementById("recordId").value = plan.id;
+            document.getElementById("editPlanId").value = plan.plan_id;
+            document.getElementById("editCategory").value = plan.category;
+            document.getElementById("editPlanName").value = plan.plan_name;
+            document.getElementById("editPrice").value = plan.price;
+            document.getElementById("editPrice").readOnly = true;
+            document.getElementById("editData").value = plan.data;
+            document.getElementById("editValidity").value = plan.validity;
+            document.getElementById("editBenefits").value = plan.benefits || "";
+            document.getElementById("editBadge").value = plan.badge || "";
+            document.getElementById("editStatus").value =
+              plan.status || "active";
+            if (plan.category === "Other") {
+              document.getElementById("customCategoryDivEdit").style.display =
+                "block";
+            } else {
+              document.getElementById("customCategoryDivEdit").style.display =
+                "none";
+            }
+            new bootstrap.Modal(
+              document.getElementById("editPlanModal")
+            ).show();
+          }
+        }
+        window.editPlan = editPlan;
+
+        // View function to display complete plan details.
+        function viewPlan(planId) {
+          let plan = plans.find((p) => p.plan_id === planId);
+          if (plan) {
+            const content = `
+              <div class="card">
+                ${
+                  plan.badge
+                    ? `<span class="badge bg-primary position-absolute top-0 start-0 m-2">${plan.badge}</span>`
+                    : ""
+                }
+                <div class="card-body">
+                  <h5 class="card-title mt-3">${plan.plan_name}</h5>
+                  <p class="card-text"><strong>Plan ID:</strong> ${
+                    plan.plan_id
+                  }</p>
+                  <p class="card-text"><strong>Category:</strong> ${
+                    plan.category
+                  }</p>
+                  <p class="card-text"><strong>Price:</strong> ₹${
+                    plan.price
+                  }</p>
+                  <p class="card-text"><strong>Data:</strong> ${plan.data}</p>
+                  <p class="card-text"><strong>Validity:</strong> ${
+                    plan.validity
+                  }</p>
+                  <p class="card-text"><strong>Benefits:</strong> ${
+                    plan.benefits || "N/A"
+                  }</p>
+                  <p class="card-text"><strong>Badge:</strong> ${
+                    plan.badge || "N/A"
+                  }</p>
+                  <p class="card-text"><strong>Status:</strong> <span class="${
+                    plan.status === "active" ? "text-success" : "text-danger"
+                  }">${plan.status}</span></p>
+                </div>
+              </div>
+            `;
+            document.getElementById("viewPlanContent").innerHTML = content;
+            new bootstrap.Modal(
+              document.getElementById("viewPlanModal")
+            ).show();
+          }
+        }
+        window.viewPlan = viewPlan;
+
+        // Handle Edit Plan form submission with a PUT request.
+        document
+          .getElementById("editPlanForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (!confirm("Are you sure you want to save changes to this plan?"))
+              return;
+            let categorySelect = document.getElementById("editCategory").value;
+            let category =
+              categorySelect === "Other"
+                ? document.getElementById("customCategoryEdit").value
+                : categorySelect;
+            const recordId = document.getElementById("recordId").value;
+            const updatedPlan = {
+              id: recordId,
+              plan_id: document.getElementById("editPlanId").value,
+              category: category,
+              plan_name: document.getElementById("editPlanName").value,
+              price: document.getElementById("editPrice").value,
+              data: document.getElementById("editData").value,
+              validity: document.getElementById("editValidity").value,
+              benefits: document.getElementById("editBenefits").value,
+              badge: document.getElementById("editBadge").value,
+              status: document.getElementById("editStatus").value,
+            };
+            fetch(`http://localhost:3001/plans/${recordId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(updatedPlan),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                fetchPlans();
+                let modalEl = document.getElementById("editPlanModal");
+                let modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) {
+                  modalInstance.hide();
+                } else {
+                  new bootstrap.Modal(modalEl).hide();
+                }
+              })
+              .catch((error) => console.error("Error updating plan:", error));
+          });
+
+        // Handle Add Plan form submission with a POST request.
+        document
+          .getElementById("addPlanForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (!confirm("Are you sure you want to add this plan?")) return;
+            let categorySelect = document.getElementById("category").value;
+            let category =
+              categorySelect === "Other"
+                ? document.getElementById("customCategoryAdd").value
+                : categorySelect;
+            const newPlan = {
+              id: document.getElementById("planId").value,
+              plan_id: document.getElementById("planId").value,
+              category,
+              plan_name: document.getElementById("planName").value,
+              price: document.getElementById("price").value,
+              data: document.getElementById("data").value,
+              validity: document.getElementById("validity").value,
+              benefits: document.getElementById("benefits").value,
+              badge: document.getElementById("badge").value,
+              status: document.getElementById("status").value,
+            };
+            fetch("http://localhost:3001/plans", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(newPlan),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("addPlanForm").reset();
+                document.getElementById("customCategoryDivAdd").style.display =
+                  "none";
+                let modalEl = document.getElementById("addPlanModal");
+                let modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) {
+                  modalInstance.hide();
+                } else {
+                  new bootstrap.Modal(modalEl).hide();
+                }
+                fetchPlans();
+                updateCategoryFilter();
+              })
+              .catch((error) => console.error("Error adding new plan:", error));
+          });
+
+        // Re-filter the table on search or filter change.
+        document
+          .getElementById("searchBox")
+          .addEventListener("input", renderPlanTable.bind(null, plans));
+        document
+          .getElementById("categoryFilter")
+          .addEventListener("change", function () {
+            const selected = document.getElementById("categoryFilter").value;
+            if (selected) {
+              renderPlanTable(
+                plans.filter((plan) => plan.category === selected)
+              );
+            } else {
+              renderPlanTable(plans);
+            }
+          });
+
+        // Initial data fetch.
+        fetchPlans();
+        fetchTransactions(); // Optional, for category graph
+
+        // Expose functions to the global window object.
+        window.confirmEdit = confirmEdit;
+        window.viewPlan = viewPlan;
+      });
+    </script>
+  </body>
+</html>

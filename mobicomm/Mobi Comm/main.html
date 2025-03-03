@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <!-- Animate.css for global animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- AOS Library for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/main.min.css" />
+    <link rel="stylesheet" href="main.css" />
+
+    <style>
+      :root {
+        --primary: #970747;
+        --btn-hover-bg: #a12059;
+        --btn-active-bg: #880640;
+        --secondary: #eacdda;
+      }
+      body {
+
+        margin: 0;
+      }
+      .navbar {
+        transition: background-color 0.3s ease;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000; /* Ensure navbar stays above content */
+      }
+      .navbar-collapse {
+        z-index: 1001; /* Higher than carousel to prevent overlap */
+      }
+      .card-container {
+        width: 260px;
+        background: linear-gradient(135deg, var(--primary), var(--btn-hover-bg) 40%, var(--btn-active-bg) 65%, var(--secondary) 100%);
+        padding: 4px;
+        border-radius: 32px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 10px auto;
+      }
+      .card-container:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+      }
+      .title-card {
+        padding: 16px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+      }
+      .title-card p {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 6px #2975ee;
+      }
+      .card-content {
+        background: #fff;
+        border-radius: 28px;
+        padding: 20px;
+        text-align: center;
+        color: #333;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 0.6s forwards;
+      }
+      @keyframes slideUp {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .card-content .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .card-content .plain {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 0;
+        color: var(--primary);
+      }
+      .card-content .plain span {
+        font-size: 14px;
+        color: #777;
+        margin-left: 4px;
+      }
+      .card-content .description {
+        font-size: 14px;
+        color: #555;
+        margin: 12px 0;
+      }
+      .card-btn {
+        background: var(--primary);
+        border: none;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .card-btn:hover {
+        background: var(--btn-hover-bg);
+        transform: scale(1.03);
+      }
+      .card-btn:active {
+        background: var(--btn-active-bg);
+        transform: scale(1);
+      }
+      .card-list-features {
+        text-align: left;
+        font-size: 13px;
+        color: #777;
+        margin-top: 12px;
+      }
+      .card-list-features .option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .card-list-features svg {
+        flex-shrink: 0;
+      }
+      .row > [class^="col-"] {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      main {
+        padding-top: 70px; /* Offset for navbar height */
+      }
+      /* Horizontally scrollable container for Best Plans */
+      .plans-scroll-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        padding: 0 15px;
+      }
+      .plans-scroll-container .card-container {
+        width: 260px;
+        scroll-snap-align: start;
+        flex: 0 0 auto;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      /* Responsive adjustments for featured plans carousel */
+      @media (max-width: 991px) {
+        #plansCarousel .carousel-inner .row {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          padding: 0 15px;
+          white-space: nowrap;
+        }
+        #plansCarousel .carousel-inner .card-container {
+          width: calc(50% - 20px); /* 2 cards on md */
+          scroll-snap-align: start;
+          flex: 0 0 auto;
+          display: inline-block;
+        }
+        .carousel-caption {
+          display: block !important;
+          font-size: 0.9rem;
+          padding: 5px;
+        }
+        .carousel-caption h2 {
+          font-size: 1.2rem;
+        }
+        .carousel-caption p {
+          font-size: 0.8rem;
+        }
+      }
+      @media (max-width: 767px) {
+        #plansCarousel .carousel-inner .card-container {
+          width: calc(100% - 20px); /* 1 card on sm */
+        }
+      }
+      /* Ensure carousel stays below navbar */
+      #carouselExampleInterval {
+        z-index: 500; /* Lower than navbar */
+      }
+      /* Search highlight */
+      .highlight {
+        background-color: #ffeb3b;
+        transition: background-color 0.3s ease;
+      }
+    </style>
+  </head>
+  <body class="animate__animated animate__fadeIn">
+    <!-- Navbar -->
+    <header data-aos="slide-down">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+          <a href="main.html" class="navbar-brand fw-bold text-white d-flex align-items-center">
+            <img src="assets/logo plain.png" alt="Logo" width="50" height="30" class="me-2" />
+            MOBI COMM
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav nav-underline me-auto">
+              <li class="nav-item">
+                <a class="nav-link active text-white" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="plans.html">Plans</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="about.html">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="help.html">Help</a>
+              </li>
+            </ul>
+            <div class="d-flex align-items-center">
+              <form class="d-flex me-3 search-box" role="search" id="searchForm">
+                <input class="form-control me-2 rounded-pill" type="search" placeholder="Search" aria-label="Search" id="searchInput" />
+                <button class="btn btn-outline-light rounded-pill" type="submit">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </form>
+              <a href="#" class="text-white me-3 position-relative" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                <i class="fa-solid fa-bell fa-lg"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+              </a>
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                  <i class="fa-solid fa-circle-user fa-lg"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Notification Modal -->
+    <div class="modal fade animate__animated animate__zoomIn" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered sepe">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="notificationModalLabel">Recharge Reminder</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Don't forget to recharge your account to continue enjoying uninterrupted services!</p>
+            <p>Don't miss the exciting offers!</p>
+            <p>Check out the latest offers!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay, Got It</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal fade animate__animated animate__zoomIn" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="logoutModalLabel">Logout Confirmation</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Stay</button>
+            <button type="button" class="btn btn-danger" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br /><br />
+    <main class="container mt-4">
+      <!-- Carousel Section -->
+      <section id="carousel" class="text-center mb-5 section-animate" data-aos="fade-up">
+        <div id="carouselExampleInterval" class="carousel slide mx-auto" data-bs-ride="carousel">
+          <div class="carousel-inner rounded-5">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-item active" data-bs-interval="5000">
+              <img src="assets/carousel1.jpg" class="d-block w-100" alt="Slide 1" data-aos="fade-in" />
+              <div class="carousel-caption d-none d-md-block fw-bold">
+                <h2 class="fw-bold text-uppercase">Large Network</h2>
+                <p class="fs-4">Any Where Any Time</p>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+              <img src="assets/carousel2.1.jpg" class="d-block w-100" alt="Slide 2" data-aos="fade-in" />
+              <div class="carousel-caption d-none d-md-block text-start">
+                <h2 class="fw-bold text-uppercase">Unlimited Entertainment</h2>
+                <p class="fs-4">Never Miss Moments</p>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+              <img src="assets/carousel3.1.jpg" class="d-block w-100" alt="Slide 3" data-aos="fade-in" />
+              <div class="carousel-caption d-none d-md-block text-end top-0 end-0 me-5 mt-3">
+                <h2 class="fw-bold text-uppercase">High Speed</h2>
+                <p class="fs-4">Never feel slow</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Best Plans Section -->
+      <section id="best-plans" class="container mt-5 mb-5 text-center section-animate" data-aos="fade-up">
+        <h2 class="mb-4">Best Plans</h2>
+        <div class="btn-group mb-4" data-aos="fade-right">
+          <button id="monthlyBtn" class="btn btn-primary">Monthly Plans</button>
+          <button id="yearlyBtn" class="btn btn-outline-primary">Yearly Plans</button>
+        </div>
+        <div id="monthlyPlans" class="plans-scroll-container" data-aos="fade-up"></div>
+        <div id="yearlyPlans" class="plans-scroll-container d-none" data-aos="fade-up"></div>
+        <div class="mt-4" data-aos="fade-up">
+          <a href="plans.html" class="btn btn-primary rounded-pill px-5 py-2">View All Plans</a>
+        </div>
+      </section>
+
+      <!-- Promotion Section -->
+      <div class="container-fluid section-animate" data-aos="fade-up">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 text-center mt-5 mb-5" data-aos="fade-right">
+            <img src="assets/man1.png" class="img-fluid rounded-5 shadow-lg" alt="High-speed internet" data-aos="zoom-in" />
+          </div>
+          <div class="col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-start ps-5" data-aos="fade-left">
+            <h1 class="fw-bold text-primary">High-speed, reliable connectivity</h1>
+            <p class="fs-5 text-muted">Besides mobile internet at 4G speed, enjoy unlimited data, FREE calls & SMS and more anywhere in India.</p>
+            <a href="plans.html" class="btn btn-primary rounded-pill px-4 py-2 mt-3">Get Started</a>
+          </div>
+        </div>
+      </div>
+
+      <hr class="border-white-50 my-4" data-aos="fade-in" />
+
+      <!-- Ad Section -->
+      <div class="container-fluid section-animate" data-aos="fade-up">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-start pe-5" data-aos="fade-right">
+            <h1 class="fw-bold text-primary">Seamless Connectivity, Anytime, Anywhere</h1>
+            <p class="fs-5 text-muted">Experience blazing-fast 4G speeds with unlimited data, crystal-clear calls, and SMS benefits. Stay connected effortlessly, no matter where you are.</p>
+            <a href="plans.html" class="btn btn-primary rounded-pill px-4 py-2 mt-3">Get Started</a>
+          </div>
+          <div class="col-lg-6 col-md-12 text-center" data-aos="fade-left">
+            <img src="assets/carouselex.jpg" class="img-fluid rounded-5 shadow-lg" alt="High-speed internet" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Plans Carousel -->
+      <section id="featured-plans" class="container mt-5 mb-5 section-animate" data-aos="fade-up">
+        <h2 class="text-center mb-4">Featured Plans</h2>
+        <div id="plansCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div id="featuredCarouselInner" class="carousel-inner"></div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#plansCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#plansCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="mt-4 text-center" data-aos="fade-up">
+          <a href="plans.html" class="btn btn-primary rounded-pill px-5 py-2">View All Plans</a>
+        </div>
+      </section>
+      <!-- FAQ Section -->
+      <section id="faq" class="py-5">
+        <div class="container d-flex justify-content-center">
+          <div class="col-lg-8 col-md-10">
+            <div class="h3 text-center text-body-dark mb-4" id="FAQ">FAQs</div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                  >
+                    How can I check my recharge history?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can check your recharge history in the "My Transactions"
+                    or "Recharge History" section in the app.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo"
+                  >
+                    What should I do if my recharge fails but the money is
+                    deducted?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseTwo"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    The amount will be refunded within 24-48 hours. Contact
+                    support with the transaction ID if not received.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree"
+                  >
+                    Can I cancel a recharge after payment?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    No, once a recharge is processed successfully, it cannot be
+                    canceled or refunded.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New FAQ 1 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFour"
+                  >
+                    How can I change my registered mobile number?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFour"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can update your registered mobile number through the
+                    "Profile" section of the app or website.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New FAQ 2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFive"
+                  >
+                    What are the available payment methods?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFive"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    We accept payments via credit/debit cards, net banking, UPI,
+                    and digital wallets.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New FAQ 3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseSix"
+                  >
+                    How can I contact customer support?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseSix"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can reach customer support through the "Help" section in
+                    the app or call our toll-free number.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+
+
+    <!-- footer -->
+    <footer class="bg-dark text-white py-5 w-100 mt-5">
+      <div class="container">
+        <div class="row">
+          <!-- Company Info -->
+          <div class="col-md-4 mb-3">
+            <h5>MOBI COMM</h5>
+            <p>
+              Stay connected with the best network provider. Fast, reliable, and
+              always available.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-2 mb-3">
+            <h5>Quick Links</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="main.html" class="nav-link p-0 text-white-50">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="plans.html" class="nav-link p-0 text-white-50"
+                  >Plans</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="about.html" class="nav-link p-0 text-white-50"
+                  >About Us</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="help.html" class="nav-link p-0 text-white-50">Help</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Support -->
+          <div class="col-md-2 mb-3">
+            <h5>Support</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="#faq" class="nav-link p-0 text-white-50">FAQs</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50">Contact Us</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50"
+                  >Terms & Conditions</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50"
+                  >Privacy Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Feedback Form -->
+          <div class="col-lg-3 col-md-12 col-12 mb-3">
+            <h5>Feedback</h5>
+            <form>
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <textarea
+                  class="form-control"
+                  rows="2"
+                  placeholder="Your Feedback"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm w-100">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <hr class="border-white-50 my-4" />
+
+        <!-- Social & Copyright -->
+        <div class="d-flex flex-column flex-sm-row justify-content-between">
+          <p class="mb-0">© 2025 Mobi Comm. All Rights Reserved.</p>
+          <ul class="list-unstyled d-flex gap-3">
+            <li>
+              <a
+                href="https://www.facebook.com"
+                target="blank"
+                class="text-white-50 me-3"
+              >
+                <i class="fa-brands fa-facebook fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.twitter.com"
+                target="blank"
+                class="text-white-50 me-3"
+              >
+                <i class="fa-brands fa-twitter fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com"
+                target="blank"
+                class="text-white-50 k me-3"
+              >
+                <i class="fa-brands fa-instagram fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com"
+                target="blank"
+                class="text-white-50 me-3"
+              >
+                <i class="fa-brands fa-linkedin fs-2"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com"
+                target="blank"
+                class="text-white-50 me-3"
+              >
+                <i class="fa-brands fa-youtube fs-2"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 1000,
+        easing: "ease-in-out",
+        once: false,
+        mirror: true
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Data for monthly and yearly plans
+        const monthlyPlansData = [
+          { title: "Basic Monthly", price: "₹299", validity: "28 Days", details: "1.5GB/Day + Unlimited Calls", planQuery: "Basic-Monthly", priceQuery: "299", validityQuery: "28", data: "1.5GB" },
+          { title: "Standard Monthly", price: "₹399", validity: "30 Days", details: "2GB/Day + Free SMS", planQuery: "Standard-Monthly", priceQuery: "399", validityQuery: "30", data: "2GB" },
+          { title: "Premium Monthly", price: "₹499", validity: "30 Days", details: "3GB/Day + OTT Subscription", planQuery: "Premium-Monthly", priceQuery: "499", validityQuery: "30", data: "3GB" },
+          { title: "Value Monthly", price: "₹349", validity: "28 Days", details: "2GB/Day + Unlimited Calls", planQuery: "Value-Monthly", priceQuery: "349", validityQuery: "28", data: "2GB" }
+        ];
+
+        const yearlyPlansData = [
+          { title: "Basic Yearly", price: "₹2499", validity: "365 Days", details: "1.5GB/Day + Unlimited Calls", planQuery: "Basic-Yearly", priceQuery: "2499", validityQuery: "365", data: "1.5GB" },
+          { title: "Standard Yearly", price: "₹2999", validity: "365 Days", details: "2GB/Day + Free SMS", planQuery: "Standard-Yearly", priceQuery: "2999", validityQuery: "365", data: "2GB" },
+          { title: "Premium Yearly", price: "₹3999", validity: "365 Days", details: "3GB/Day + OTT Subscription", planQuery: "Premium-Yearly", priceQuery: "3999", validityQuery: "365", data: "3GB" },
+          { title: "Value Yearly", price: "₹3499", validity: "365 Days", details: "2.5GB/Day + Free SMS", planQuery: "Value-Yearly", priceQuery: "3499", validityQuery: "365", data: "2.5GB" }
+        ];
+
+        // Function to render a card using the improved card design
+        function renderCard(plan) {
+          return `
+            <div class="card-container animate__animated animate__fadeIn">
+              <div class="title-card">
+                <p>${plan.title.includes("Premium") ? "Most Popular" : "Plan"}</p>
+                <i class="fa-solid fa-crown"></i>
+              </div>
+              <div class="card-content">
+                <p class="title">${plan.title}</p>
+                <p class="plain">${plan.price}<span> / ${plan.validity}</span></p>
+                <p class="description">${plan.details}</p>
+                <button class="card-btn" onclick="window.location.href='recharge.html?plan=${plan.planQuery}&price=${plan.priceQuery}&validity=${plan.validityQuery}&data=${plan.data}'">Recharge Now</button>
+                <div class="card-list-features">
+                  <div class="option">
+                    <svg viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                      <g stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none">
+                        <rect rx="4" y="3" x="3" height="18" width="18"></rect>
+                        <path d="m9 12l2.25 2L15 10"></path>
+                      </g>
+                    </svg>
+                    <span>Unlimited Calls</span>
+                  </div>
+                  <div class="option">
+                    <svg viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                      <g stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none">
+                        <rect rx="4" y="3" x="3" height="18" width="18"></rect>
+                        <path d="m9 12l2.25 2L15 10"></path>
+                      </g>
+                    </svg>
+                    <span>${plan.data}/Day Data</span>
+                  </div>
+                  <div class="option">
+                    <svg viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                      <g stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none">
+                        <rect rx="4" y="3" x="3" height="18" width="18"></rect>
+                        <path d="m9 12l2.25 2L15 10"></path>
+                      </g>
+                    </svg>
+                    <span>Refund Guarantee</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // Render monthly and yearly plans with 4 cards per row
+        function renderPlans(plans, containerId) {
+          const container = document.getElementById(containerId);
+          container.innerHTML = "";
+          plans.forEach(plan => {
+            container.innerHTML += renderCard(plan); // No col-* classes, direct card rendering
+          });
+        }
+
+        renderPlans(monthlyPlansData, "monthlyPlans");
+        renderPlans(yearlyPlansData, "yearlyPlans");
+
+        // Data for featured plans carousel
+        const featuredPlansData = [
+          { title: "Unlimited Plan", price: "₹299", validity: "28 Days", details: "1.5GB/Day + Unlimited Calls", planQuery: "Unlimited-Plan", priceQuery: "299", validityQuery: "28", data: "1.5GB" },
+          { title: "3-Months Pack", price: "₹799", validity: "84 Days", details: "2GB/Day + OTT Subscription", planQuery: "3-Months-Pack", priceQuery: "799", validityQuery: "84", data: "2GB" },
+          { title: "Annual Plan", price: "₹2999", validity: "365 Days", details: "3GB/Day + Free SMS", planQuery: "Annual-Plan", priceQuery: "2999", validityQuery: "365", data: "3GB" },
+          { title: "Super Saver Pack", price: "₹599", validity: "56 Days", details: "1.5GB/Day + 100 SMS/Day", planQuery: "Super-Saver-Pack", priceQuery: "599", validityQuery: "56", data: "1.5GB" },
+          { title: "Work From Home", price: "₹999", validity: "90 Days", details: "Unlimited Data + Calling", planQuery: "Work-From-Home", priceQuery: "999", validityQuery: "90", data: "Unlimited" },
+          { title: "Night Owl Plan", price: "₹399", validity: "30 Days", details: "Free Data 12AM - 6AM", planQuery: "Night-Owl-Plan", priceQuery: "399", validityQuery: "30", data: "Night-Data" },
+          { title: "Weekend Binge", price: "₹499", validity: "30 Days", details: "Unlimited Data on Weekends", planQuery: "Weekend-Binge", priceQuery: "499", validityQuery: "30", data: "Unlimited" },
+          { title: "Student Pack", price: "₹199", validity: "30 Days", details: "1GB/Day + Free Calls", planQuery: "Student-Pack", priceQuery: "199", validityQuery: "30", data: "1GB" }
+        ];
+
+        // Utility function to chunk an array into subarrays
+        function chunkArray(array, chunkSize) {
+          const result = [];
+          for (let i = 0; i < array.length; i += chunkSize) {
+            result.push(array.slice(i, i + chunkSize));
+          }
+          return result;
+        }
+
+        // Function to determine cards per slide based on screen size
+        function getCardsPerSlide() {
+          const width = window.innerWidth;
+          if (width >= 992) return 4; // lg
+          else if (width >= 768) return 2; // md
+          else return 1; // sm
+        }
+
+        // Render featured carousel with responsive slides
+        function renderFeaturedCarousel(slides, containerId) {
+          const container = document.getElementById(containerId);
+          container.innerHTML = "";
+          slides.forEach((slide, slideIndex) => {
+            let slideHtml = `<div class="carousel-item ${slideIndex === 0 ? "active" : ""}"><div class="row">`;
+            slide.forEach((plan, index) => {
+              const delay = index * 150;
+              slideHtml += `
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="${delay}">
+                  ${renderCard(plan)}
+                </div>`;
+            });
+            slideHtml += `</div></div>`;
+            container.innerHTML += slideHtml;
+          });
+        }
+
+        // Dynamically render carousel based on screen size
+        function updateCarousel() {
+          const cardsPerSlide = getCardsPerSlide();
+          const slides = chunkArray(featuredPlansData, cardsPerSlide);
+          renderFeaturedCarousel(slides, "featuredCarouselInner");
+        }
+
+        // Initial render
+        updateCarousel();
+
+        // Re-render on resize with debounce
+        function debounce(func, wait) {
+          let timeout;
+          return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+          };
+        }
+        window.addEventListener('resize', debounce(updateCarousel, 200));
+
+        // Toggle functionality for Monthly/Yearly plans
+        document.getElementById("monthlyBtn").addEventListener("click", function () {
+          document.getElementById("monthlyPlans").classList.remove("d-none");
+          document.getElementById("yearlyPlans").classList.add("d-none");
+          this.classList.add("btn-primary");
+          this.classList.remove("btn-outline-primary");
+          document.getElementById("yearlyBtn").classList.add("btn-outline-primary");
+          document.getElementById("yearlyBtn").classList.remove("btn-primary");
+        });
+
+        document.getElementById("yearlyBtn").addEventListener("click", function () {
+          document.getElementById("yearlyPlans").classList.remove("d-none");
+          document.getElementById("monthlyPlans").classList.add("d-none");
+          this.classList.add("btn-primary");
+          this.classList.remove("btn-outline-primary");
+          document.getElementById("monthlyBtn").classList.add("btn-outline-primary");
+          document.getElementById("monthlyBtn").classList.remove("btn-primary");
+        });
+
+        // Search functionality
+        document.getElementById("searchForm").addEventListener("submit", function (event) {
+          event.preventDefault();
+          const searchTerm = document.getElementById("searchInput").value.toLowerCase().trim();
+          document.querySelectorAll(".highlight").forEach(el => el.classList.remove("highlight"));
+          if (searchTerm) {
+            const elements = document.querySelectorAll("p, h1, h2, h3, h4, h5, h6, .card-container, .carousel-caption");
+            let firstMatch = null;
+            elements.forEach(element => {
+              const text = element.textContent.toLowerCase();
+              if (text.includes(searchTerm)) {
+                element.classList.add("highlight");
+                if (!firstMatch) firstMatch = element;
+              }
+            });
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+
+        // Logout Function
+        window.logout = function() {
+          window.location.href = "index.html";
+        };
+      });
+    </script>
+  </body>
+</html>

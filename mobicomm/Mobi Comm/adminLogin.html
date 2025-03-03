@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Mobi Comm</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/main1.min.css" />
+  </head>
+  <body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar bg-primary mb-1">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a href="#" class="navbar-brand fw-bold text-white">
+          <img
+            src="assets/logo plain.png"
+            alt="Logo"
+            width="50"
+            height="30"
+            class="d-inline-block align-text-top"
+          />
+          MOBI COMM
+        </a>
+        <!-- Admin icon -->
+        <a
+          href="adminLogin.html"
+          class="text-white d-flex align-items-center"
+          aria-label="Admin Logout"
+        >
+          <span class="fw-bold">Admin</span>
+        </a>
+      </div>
+    </nav>
+    <!-- Login Section -->
+    <main class="container vh-100 d-flex justify-content-center align-items-center">
+      <div class="row w-100">
+        <!-- Image Section -->
+        <div class="col-md-6 d-flex justify-content-center align-items-center">
+          <img
+            src="assets/Admin-bro.svg"
+            alt="Login Illustration"
+            class="img-fluid"
+          />
+        </div>
+        <!-- Login Card -->
+        <div class="col-md-6 d-flex justify-content-center align-items-center">
+          <section class="login-container bg-light">
+            <div class="display-4 fw-bold">Admin Login</div>
+            <div class="fs-5 text-muted">Access your admin dashboard</div>
+            <form id="loginForm">
+              <!-- Email Input -->
+              <div class="mb-4 mt-4">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control border-0 border-bottom border-primary bg-light"
+                  id="email"
+                  placeholder="Enter email"
+                  required
+                />
+                <!-- Error message for email -->
+                <div id="emailError" class="text-danger small"></div>
+              </div>
+              <!-- Password Input (disabled until email is verified) -->
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control border-0 border-bottom border-primary bg-light"
+                  id="password"
+                  placeholder="Enter password"
+                  disabled
+                  required
+                />
+                <!-- Error message for password -->
+                <div id="passwordError" class="text-danger small"></div>
+              </div>
+              <!-- Login Button -->
+              <div class="d-flex justify-content-center mt-3 mb-3">
+                <button
+                  type="submit"
+                  class="btn btn-outline-primary rounded-pill px-4 w-100"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </main>
+    <!-- Footer -->
+    <footer class="text-center mt-3">
+      <p class="small">&copy; 2025 Mobile Recharge. All Rights Reserved.</p>
+    </footer>
+    <script>
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const emailErrorDiv = document.getElementById("emailError");
+
+      // Clear error message on input change and disable password again.
+      emailInput.addEventListener("input", function () {
+        emailErrorDiv.textContent = "";
+        passwordInput.disabled = true;
+      });
+
+      // On losing focus, automatically verify the email.
+      emailInput.addEventListener("blur", function () {
+        const email = emailInput.value;
+        // Sample valid email (adjust as needed)
+        const validEmail = "admin@mobicomm.com";
+        if (email !== validEmail) {
+          emailErrorDiv.textContent =
+            "The email address you entered is not registered.";
+          passwordInput.disabled = true;
+        } else {
+          // Email verified: enable the password field and optionally lock the email.
+          passwordInput.disabled = false;
+          emailInput.readOnly = true;
+          emailErrorDiv.textContent = "";
+        }
+      });
+
+      // When the login form is submitted, verify the password.
+      document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        // Clear previous password error
+        document.getElementById("passwordError").textContent = "";
+        var password = passwordInput.value;
+        // Sample valid password (adjust as needed)
+        var validPassword = "admin123";
+        if (password !== validPassword) {
+          document.getElementById("passwordError").textContent =
+            "The password you entered is incorrect. Please try again.";
+        } else {
+          // Credentials are valid, redirect to admin dashboard.
+          window.location.href = "admin.html";
+        }
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
