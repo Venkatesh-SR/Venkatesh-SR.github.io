@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help</title>
+    <link rel="icon" href="assets/logo plain.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/main.min.css" />
+    <!-- AOS Library for Animations -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+      /* Custom CSS for horizontal navigation and icon placement on small screens */
+      @media (max-width: 576px) {
+        .navbar .navbar-brand img {
+          width: 40px; /* Reduce logo size to save space */
+        }
+        .navbar .nav-item {
+          margin-right: 0; /* Remove right margin to minimize spacing */
+        }
+        .navbar .nav-link {
+          padding: 0.5rem; /* Reduce padding for links to fit horizontally */
+        }
+        .navbar .navbar-nav {
+          flex-direction: row; /* Display items horizontally */
+          justify-content: center; /* Center items horizontally */
+        }
+        .navbar .navbar-collapse {
+          text-align: center; /* Keep center alignment for collapsed content */
+        }
+        /* Flexbox layout for icons to stay side by side */
+        .navbar .icon-container {
+          display: flex; /* Use flexbox to align icons horizontally */
+          justify-content: center; /* Center the icons within their container */
+          gap: 0.5rem; /* Add spacing between icons */
+        }
+        .navbar .fa-bell,
+        .navbar .fa-circle-user {
+          font-size: 1.2rem; /* Reduce icon size to prevent overlap */
+        }
+        .navbar .me-3 {
+          margin-right: 0.5rem !important; /* Reduce margin between icons */
+        }
+      }
+      /* Ensure icon container is flex even on larger screens */
+      .navbar .icon-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem; /* Consistent spacing between icons */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header>
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top mb-0"
+      >
+        <div class="container-fluid">
+          <a
+            href="main.html"
+            class="navbar-brand fw-bold text-white d-flex align-items-center"
+          >
+            <img
+              src="assets/logo plain.png"
+              alt="Logo"
+              width="50"
+              height="30"
+              class="me-2"
+            />
+            MOBI COMM
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarScroll"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav nav-underline me-auto">
+              <li class="nav-item">
+                <a class="nav-link text-white" href="main.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="plans.html">Plans</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="about.html">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active text-white" href="help.html">Help</a>
+              </li>
+            </ul>
+            <div class="icon-container">
+              <a
+                href="#"
+                class="text-white me-3 position-relative"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationModal"
+              >
+                <i class="fa-solid fa-bell fa-lg"></i>
+                <span
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  >3</span
+                >
+              </a>
+              <div class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle text-white"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="fa-solid fa-circle-user fa-lg"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="profile.html">My Profile</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item text-danger"
+                      href="#"
+                      data-bs-toggle="modal"
+                      data-bs-target="#logoutModal"
+                      >Logout</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Notification Modal -->
+    <div
+      class="modal fade"
+      id="notificationModal"
+      tabindex="-1"
+      aria-labelledby="notificationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="notificationModalLabel">
+              Recharge Reminder
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Don't forget to recharge your account to continue enjoying
+              uninterrupted services!
+            </p>
+          </div>
+          <div class="modal-body"><p>Don't miss the exciting offers!</p></div>
+          <div class="modal-body"><p>Check out the latest offers!</p></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Okay, Got It
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="logoutModalLabel">
+              Logout Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Are you sure you want to log out?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+            >
+              Stay
+            </button>
+            <button type="button" class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mt-0 pt-5">
+      <!-- Contact Expert Section -->
+      <div
+        class="container-fluid mt-5"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <div class="row align-items-center">
+          <div class="col-lg-4 col-md-12 text-center mt-5 mb-5">
+            <img
+              src="assets/customer expert.webp"
+              class="img-fluid rounded-5 shadow-lg"
+              alt="Expert Consultation"
+            />
+          </div>
+          <div
+            class="col-lg-8 col-md-12 d-flex flex-column justify-content-center align-items-start ps-5 mt-5 px-3"
+          >
+            <h1 class="fw-bold text-primary">
+              Talk to Our Connectivity Experts
+            </h1>
+            <p class="fs-5 text-muted">
+              Need help choosing the right plan? Our experts are here to guide
+              you through the best options tailored to your needs. Enjoy
+              high-speed internet, unlimited calls, and exclusive benefits with
+              our top-rated mobile plans.
+            </p>
+            <p class="fs-5 text-muted">
+              Whether you're a business user, a student, or need a family plan,
+              we have the perfect package for you. Get instant assistance with
+              plan activation, number portability, or technical support.
+            </p>
+            <h4 class="fw-bold text-dark mt-3">
+              <i class="fa-solid fa-phone"></i> Toll-Free Support:
+            </h4>
+            <ul class="list-unstyled fs-5 text-muted">
+              <li>Customer Support: <strong>1800-123-4567</strong></li>
+              <li>
+                Business & Enterprise Support: <strong>1800-987-6543</strong>
+              </li>
+              <li>Plan Assistance: <strong>1800-555-6789</strong></li>
+            </ul>
+            <a
+              href="plans.html"
+              class="btn btn-primary rounded-pill px-4 py-2 mt-3"
+              >Explore Plans</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Locations Section -->
+      <div
+        class="container-fluid mt-5"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="200"
+      >
+        <div class="row align-items-center">
+          <div
+            class="col-lg-8 col-md-12 d-flex flex-column justify-content-center align-items-start pe-5 px-3"
+          >
+            <h1 class="fw-bold text-primary">
+              Find Us Easily, Stay Connected Always
+            </h1>
+            <p class="fs-5 text-muted">
+              Experience blazing-fast 4G speeds with unlimited data,
+              crystal-clear calls, and SMS benefits. Stay connected
+              effortlessly, no matter where you are.
+            </p>
+            <p class="fs-5 text-muted">
+              Visit our nearest store for SIM activation, number portability,
+              plan upgrades, or device support. Our customer-friendly experts
+              are here to assist you.
+            </p>
+            <h4 class="fw-bold text-dark mt-3">
+              <i class="fa-solid fa-location-dot"></i> Locate Our Stores
+            </h4>
+            <ul class="list-unstyled fs-5 text-muted">
+              <li>
+                <i class="fa-solid fa-share"></i> Over 500+ stores across India
+              </li>
+              <li>
+                <i class="fa-solid fa-share"></i> Walk-in for instant SIM
+                replacement & activation
+              </li>
+              <li>
+                <i class="fa-solid fa-share"></i> Exclusive in-store offers on
+                prepaid plans
+              </li>
+            </ul>
+            <div class="d-flex flex-wrap">
+              <a
+                href="plans.html"
+                class="btn btn-primary rounded-pill px-4 py-2 mt-3 me-3"
+                >Explore Plans</a
+              >
+              <a
+                href="store-locator.html"
+                class="btn btn-outline-primary rounded-pill px-4 py-2 mt-3"
+                >Find Nearest Store</a
+              >
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 text-center">
+            <img
+              src="assets/stores.avif"
+              class="img-fluid rounded-5 shadow-lg"
+              alt="High-speed internet"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQs Section -->
+      <section
+        id="faq"
+        class="py-5"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="400"
+      >
+        <div class="container d-flex justify-content-center">
+          <div class="col-lg-8 col-md-10">
+            <div class="h3 text-center text-body-dark mb-4" id="FAQ">FAQs</div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                  >
+                    How can I check my recharge history?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can check your recharge history in the "My Transactions"
+                    or "Recharge History" section in the app.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo"
+                  >
+                    What should I do if my recharge fails but the money is
+                    deducted?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseTwo"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    The amount will be refunded within 24-48 hours. Contact
+                    support with the transaction ID if not received.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree"
+                  >
+                    Can I cancel a recharge after payment?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    No, once a recharge is processed successfully, it cannot be
+                    canceled or refunded.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFour"
+                  >
+                    How can I change my registered mobile number?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFour"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can update your registered mobile number through the
+                    "Profile" section of the app or website.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFive"
+                  >
+                    What are the available payment methods?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFive"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    We accept payments via credit/debit cards, net banking, UPI,
+                    and digital wallets.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseSix"
+                  >
+                    How can I contact customer support?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseSix"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    You can reach customer support through the "Help" section in
+                    the app or call our toll-free number.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 w-100 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <h5>MOBI COMM</h5>
+            <p>
+              Stay connected with the best network provider. Fast, reliable, and
+              always available.
+            </p>
+          </div>
+          <div class="col-md-2 mb-3">
+            <h5>Quick Links</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="main.html" class="nav-link p-0 text-white-50">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="plans.html" class="nav-link p-0 text-white-50"
+                  >Plans</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="about.html" class="nav-link p-0 text-white-50"
+                  >About Us</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="help.html" class="nav-link p-0 text-white-50">Help</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-2 mb-3">
+            <h5>Support</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="#faq" class="nav-link p-0 text-white-50">FAQs</a>
+              </li>
+              <li class="nav-item">
+                <a href="help.html" class="nav-link p-0 text-white-50"
+                  >Contact Us</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50"
+                  >Terms & Conditions</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link p-0 text-white-50"
+                  >Privacy Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-12 col-12 mb-3">
+            <h5>Feedback</h5>
+            <form>
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <textarea
+                  class="form-control"
+                  rows="2"
+                  placeholder="Your Feedback"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm w-100">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+        <hr class="border-white-50 my-4" />
+        <div class="d-flex flex-column flex-sm-row justify-content-between">
+          <p class="mb-0">© 2025 Mobi Comm. All Rights Reserved.</p>
+          <ul class="list-unstyled d-flex gap-3">
+            <li>
+              <a
+                href="https://www.facebook.com"
+                target="blank"
+                class="text-white-50 me-3"
+                ><i class="fa-brands fa-facebook fs-2"></i
+              ></a>
+            </li>
+            <li>
+              <a
+                href="https://www.twitter.com"
+                target="blank"
+                class="text-white-50 me-3"
+                ><i class="fa-brands fa-twitter fs-2"></i
+              ></a>
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com"
+                target="blank"
+                class="text-white-50 me-3"
+                ><i class="fa-brands fa-instagram fs-2"></i
+              ></a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com"
+                target="blank"
+                class="text-white-50 me-3"
+                ><i class="fa-brands fa-linkedin fs-2"></i
+              ></a>
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com"
+                target="blank"
+                class="text-white-50 me-3"
+                ><i class="fa-brands fa-youtube fs-2"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 1000,
+        offset: 100,
+      });
+    </script>
+    <script>
+      function logout() {
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
